@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="pers.wangshun.supermarketserver.mapper.GoodsInfoMapper">
+  <resultMap id="BaseResultMap" type="pers.wangshun.supermarketserver.model.GoodsInfo">
+    <id column="goods_bar_code" jdbcType="BIGINT" property="goodsBarCode" />
+    <result column="goods_category_number" jdbcType="INTEGER" property="goodsCategoryNumber" />
+    <result column="goods_name" jdbcType="VARCHAR" property="goodsName" />
+    <result column="goods_purchase_price" jdbcType="DECIMAL" property="goodsPurchasePrice" />
+    <result column="goods_origin" jdbcType="VARCHAR" property="goodsOrigin" />
+    <result column="goods_production_date" jdbcType="DATE" property="goodsProductionDate" />
+    <result column="goods_expiry_date" jdbcType="INTEGER" property="goodsExpiryDate" />
+    <result column="goods_raw_material" jdbcType="VARCHAR" property="goodsRawMaterial" />
+    <result column="goods_specification" jdbcType="VARCHAR" property="goodsSpecification" />
+    <result column="goods_manufacturer" jdbcType="VARCHAR" property="goodsManufacturer" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    goods_bar_code, goods_category_number, goods_name, goods_purchase_price, goods_origin, 
+    goods_production_date, goods_expiry_date, goods_raw_material, goods_specification, 
+    goods_manufacturer
+  </sql>
+  <select id="selectByExample" parameterType="pers.wangshun.supermarketserver.model.GoodsInfoExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from management_sys.goods_info
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from management_sys.goods_info
+    where goods_bar_code = #{goodsBarCode,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from management_sys.goods_info
+    where goods_bar_code = #{goodsBarCode,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="pers.wangshun.supermarketserver.model.GoodsInfo">
+    insert into management_sys.goods_info (goods_bar_code, goods_category_number,
+      goods_name, goods_purchase_price, goods_origin, 
+      goods_production_date, goods_expiry_date, goods_raw_material, 
+      goods_specification, goods_manufacturer)
+    values (#{goodsBarCode,jdbcType=BIGINT}, #{goodsCategoryNumber,jdbcType=INTEGER}, 
+      #{goodsName,jdbcType=VARCHAR}, #{goodsPurchasePrice,jdbcType=DECIMAL}, #{goodsOrigin,jdbcType=VARCHAR}, 
+      #{goodsProductionDate,jdbcType=DATE}, #{goodsExpiryDate,jdbcType=INTEGER}, #{goodsRawMaterial,jdbcType=VARCHAR}, 
+      #{goodsSpecification,jdbcType=VARCHAR}, #{goodsManufacturer,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="pers.wangshun.supermarketserver.model.GoodsInfo">
+    insert into management_sys.goods_info
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="goodsBarCode != null">
+        goods_bar_code,
+      </if>
+      <if test="goodsCategoryNumber != null">
+        goods_category_number,
+      </if>
+      <if test="goodsName != null">
+        goods_name,
+      </if>
+      <if test="goodsPurchasePrice != null">
+        goods_purchase_price,
+      </if>
+      <if test="goodsOrigin != null">
+        goods_origin,
+      </if>
+      <if test="goodsProductionDate != null">
+        goods_production_date,
+      </if>
+      <if test="goodsExpiryDate != null">
+        goods_expiry_date,
+      </if>
+      <if test="goodsRawMaterial != null">
+        goods_raw_material,
+      </if>
+      <if test="goodsSpecification != null">
+        goods_specification,
+      </if>
+      <if test="goodsManufacturer != null">
+        goods_manufacturer,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="goodsBarCode != null">
+        #{goodsBarCode,jdbcType=BIGINT},
+      </if>
+      <if test="goodsCategoryNumber != null">
+        #{goodsCategoryNumber,jdbcType=INTEGER},
+      </if>
+      <if test="goodsName != null">
+        #{goodsName,jdbcType=VARCHAR},
+      </if>
+      <if test="goodsPurchasePrice != null">
+        #{goodsPurchasePrice,jdbcType=DECIMAL},
+      </if>
+      <if test="goodsOrigin != null">
+        #{goodsOrigin,jdbcType=VARCHAR},
+      </if>
+      <if test="goodsProductionDate != null">
+        #{goodsProductionDate,jdbcType=DATE},
+      </if>
+      <if test="goodsExpiryDate != null">
+        #{goodsExpiryDate,jdbcType=INTEGER},
+      </if>
+      <if test="goodsRawMaterial != null">
+        #{goodsRawMaterial,jdbcType=VARCHAR},
+      </if>
+      <if test="goodsSpecification != null">
+        #{goodsSpecification,jdbcType=VARCHAR},
+      </if>
+      <if test="goodsManufacturer != null">
+        #{goodsManufacturer,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="pers.wangshun.supermarketserver.model.GoodsInfo">
+    update management_sys.goods_info
+    <set>
+      <if test="goodsCategoryNumber != null">
+        goods_category_number = #{goodsCategoryNumber,jdbcType=INTEGER},
+      </if>
+      <if test="goodsName != null">
+        goods_name = #{goodsName,jdbcType=VARCHAR},
+      </if>
+      <if test="goodsPurchasePrice != null">
+        goods_purchase_price = #{goodsPurchasePrice,jdbcType=DECIMAL},
+      </if>
+      <if test="goodsOrigin != null">
+        goods_origin = #{goodsOrigin,jdbcType=VARCHAR},
+      </if>
+      <if test="goodsProductionDate != null">
+        goods_production_date = #{goodsProductionDate,jdbcType=DATE},
+      </if>
+      <if test="goodsExpiryDate != null">
+        goods_expiry_date = #{goodsExpiryDate,jdbcType=INTEGER},
+      </if>
+      <if test="goodsRawMaterial != null">
+        goods_raw_material = #{goodsRawMaterial,jdbcType=VARCHAR},
+      </if>
+      <if test="goodsSpecification != null">
+        goods_specification = #{goodsSpecification,jdbcType=VARCHAR},
+      </if>
+      <if test="goodsManufacturer != null">
+        goods_manufacturer = #{goodsManufacturer,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where goods_bar_code = #{goodsBarCode,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="pers.wangshun.supermarketserver.model.GoodsInfo">
+    update management_sys.goods_info
+    set goods_category_number = #{goodsCategoryNumber,jdbcType=INTEGER},
+      goods_name = #{goodsName,jdbcType=VARCHAR},
+      goods_purchase_price = #{goodsPurchasePrice,jdbcType=DECIMAL},
+      goods_origin = #{goodsOrigin,jdbcType=VARCHAR},
+      goods_production_date = #{goodsProductionDate,jdbcType=DATE},
+      goods_expiry_date = #{goodsExpiryDate,jdbcType=INTEGER},
+      goods_raw_material = #{goodsRawMaterial,jdbcType=VARCHAR},
+      goods_specification = #{goodsSpecification,jdbcType=VARCHAR},
+      goods_manufacturer = #{goodsManufacturer,jdbcType=VARCHAR}
+    where goods_bar_code = #{goodsBarCode,jdbcType=BIGINT}
+  </update>
+</mapper>

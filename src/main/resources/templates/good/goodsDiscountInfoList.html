@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<!-- saved from url=(0052)http://getbootstrap.com/docs/4.0/examples/dashboard/ -->
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>Система Управления</title>
+    <!-- Bootstrap core CSS -->
+    <link th:href="@{../asserts/css/bootstrap.min.css}" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link th:href="@{../asserts/css/dashboard.css}" rel="stylesheet">
+    <style type="text/css">
+        @-webkit-keyframes chartjs-render-animation {
+            from {
+                opacity: 0.99
+            }
+            to {
+                opacity: 1
+            }
+        }
+
+        @keyframes chartjs-render-animation {
+            from {
+                opacity: 0.99
+            }
+            to {
+                opacity: 1
+            }
+        }
+
+        .chartjs-render-monitor {
+            -webkit-animation: chartjs-render-animation 0.001s;
+            animation: chartjs-render-animation 0.001s;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+    </style>
+</head>
+
+<body>
+<div th:replace="commons/bar::topbar"></div>
+<div class="container-fluid">
+    <div class="row">
+        <!--引入侧边栏-->
+        <div th:replace="commons/bar::sidebar(activeUri='goodsDiscountInfos')"></div>
+        <main role="main" class="col-md-9 ml-sm-auto col-lg-10 pt-3 px-4">
+            <h2>Информация о скидках на товары</h2>
+            <a style="margin-bottom: 5px" type="button" class="btn btn-outline-primary float-right" href="goodsDiscountInfo" th:href="@{/goodsDiscountInfo}">Добавлять</a>
+            <div class="table-responsive">
+                <table class="table table-striped table-sm">
+                    <thead>
+                    <tr>
+                        <th class="text-center">Операционная</th>
+                        <th class="text-center">Товарный штрих-код</th>
+                        <th class="text-center">Наименование товара</th>
+                        <th class="text-center">Товар со скидкой</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="goodsDiscountInfo:${pageInfo.list}">
+                        <td class="align-middle text-center">
+                            <div class="btn-group" role="group" aria-label="Basic example">
+                                <a type="button" class="btn btn-sm btn-primary" th:href="@{/goodsDiscountInfo/}+${goodsDiscountInfo.goodsBarCode}">Модификация</a>
+                                <form th:action="@{/goodsDiscountInfo/}+${goodsDiscountInfo.goodsBarCode}" method="post">
+                                    <input type="hidden" name="_method" value="delete">
+                                    <button type="submit" class="btn btn-sm btn-danger">Удалять</button>
+                                </form>
+
+                            </div>
+                        </td>
+                        <td class="align-middle text-center" th:text="${goodsDiscountInfo.goodsBarCode}"></td>
+                        <td class="align-middle text-center" th:text="${goodsDiscountInfo.goodsName}"></td>
+                        <td class="align-middle text-center" th:text="${goodsDiscountInfo.goodsDiscount}"></td>
+                    </tr>
+                    </tbody>
+                </table>
+                <nav aria-label="Page navigation example">
+                    <ul class="pagination justify-content-end">
+                        <!-- 上一页  -->
+                        <li class="page-item disabled" th:if="${pageInfo.pageNum} eq 1">
+                            <a class="page-link" href="#" tabindex="-1" aria-disabled="true" th:href="@{javaScript:void(0)}" aria-label="Previous">
+                                <span aria-hidden="true">&laquo;</span>
+                            </a>
+                        </li>
+                        <li class="page-item" th:if="${pageInfo.pageNum} ne 1">
+                            <a class="page-link" aria-disabled="false" th:href="@{/goodsDiscountInfos(pageNum=${pageInfo.pageNum}-1)}" aria-label="Previous">
+                                <span aria-hidden="true">&laquo;</span>
+                            </a>
+                        </li>
+                        <li th:each="i : ${#numbers.sequence(1, pageInfo.pages)}">
+                            <a class="page-link active" th:href="@{/goodsDiscountInfos(pageNum=${i})}" th:text="${i}" th:value="${i}"></a>
+                        </li>
+
+                        <!-- 下一页  -->
+                        <!-- 当当前页码为最后一页或者最后一页为0时，隐藏下一页按钮 当当前页码不等于总页码时，跳转下一页  -->
+                        <li class="page-item disabled" th:if="${(pageInfo.pageNum eq pageInfo.pages) or (pageInfo.pages eq 0)}">
+                            <a class="page-link" href="#" tabindex="-1" aria-disabled="true" aria-label="Next">
+                                <span aria-hidden="true">&raquo;</span>
+                            </a>
+                        </li>
+                        <li class="page-item" th:if="${pageInfo.pageNum ne pageInfo.pages}">
+                            <a class="page-link" th:href="@{/goodsDiscountInfos(pageNum=${pageInfo.pageNum}+1)}" aria-disabled="false" aria-label="Next">
+                                <span aria-hidden="true">&raquo;</span>
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        </main>
+    </div>
+</div>
+
+<!-- Bootstrap core JavaScript
+================================================== -->
+<!-- Placed at the end of the document so the pages load faster -->
+<script type="text/javascript" src="../../asserts/js/jquery-3.2.1.slim.min.js"></script>
+<script type="text/javascript" src="../asserts/js/popper.min.js"></script>
+<script type="text/javascript" src="../asserts/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="../asserts/js/bootstrap-datetimepicker.min.js"></script>
+<script type="text/javascript" src="../asserts/js/locales/bootstrap-datetimepicker.ru.js"></script>
+
+<!-- Icons -->
+<script type="text/javascript" src="../asserts/js/feather.min.js"></script>
+<script>
+    feather.replace()
+</script>
+
+<!-- Graphs -->
+<script type="text/javascript" src="../asserts/js/Chart.min.js"></script>
+
+
+</body>
+
+</html>

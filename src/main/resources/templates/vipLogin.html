@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <title>Регистрация Персонала</title>
+    <!-- Bootstrap core CSS -->
+    <link th:href="@{asserts/css/bootstrap.min.css}" rel="stylesheet">
+    <!-- Custom styles for this template -->
+    <link th:href="@{asserts/css/signin.css}" rel="stylesheet">
+</head>
+
+<body class="text-center">
+<form class="form-signin" action="dashboard.html" th:action="@{/vip/login}">
+    <h1 class="h3 mb-3 font-weight-normal">VIP, пожалуйста, войдите</h1>
+    <p style="color: red" th:text="${message}" th:if="${#strings.isEmpty(message)}"></p>
+    <label class="sr-only" for="vipNumber">EmployeeCode</label>
+    <input type="text" name="vipNumber" class="form-control" id="vipNumber" placeholder="Номер VIP"
+           required="required"
+           autofocus>
+    <label class="sr-only" for="username">Username</label>
+    <input type="text" name="username" class="form-control" id="username" placeholder="Имя пользователя"
+           required="required"
+           autofocus>
+    <label class="sr-only" for="password">Password</label>
+    <input type="password" name="password" id="password" class="form-control" placeholder="Пароль" required="required">
+    <button class="btn btn-lg btn-outline-primary btn-block" type="submit">Войти в систему</button>
+    <a class="btn btn-lg btn-light btn-block" href="/toModifyVipPassword">Сменить пароль</a>
+    <p class="mt-5 mb-3 text-muted">© 2017-2020</p>
+</form>
+
+</body>
+
+</html>

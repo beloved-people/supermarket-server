@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="pers.wangshun.supermarketserver.mapper.ThirdLevelAdministrativeDivisionMapper">
+  <resultMap id="BaseResultMap" type="pers.wangshun.supermarketserver.model.ThirdLevelAdministrativeDivision">
+    <id column="third_level_id" jdbcType="INTEGER" property="thirdLevelId" />
+    <result column="first_level_id" jdbcType="INTEGER" property="firstLevelId" />
+    <result column="second_level_id" jdbcType="INTEGER" property="secondLevelId" />
+    <result column="third_level_name" jdbcType="VARCHAR" property="thirdLevelName" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    third_level_id, first_level_id, second_level_id, third_level_name
+  </sql>
+  <select id="selectByExample" parameterType="pers.wangshun.supermarketserver.model.ThirdLevelAdministrativeDivisionExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from third_level_administrative_division
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from third_level_administrative_division
+    where third_level_id = #{thirdLevelId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from third_level_administrative_division
+    where third_level_id = #{thirdLevelId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="pers.wangshun.supermarketserver.model.ThirdLevelAdministrativeDivision">
+    insert into third_level_administrative_division (third_level_id, first_level_id, second_level_id, 
+      third_level_name)
+    values (#{thirdLevelId,jdbcType=INTEGER}, #{firstLevelId,jdbcType=INTEGER}, #{secondLevelId,jdbcType=INTEGER}, 
+      #{thirdLevelName,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="pers.wangshun.supermarketserver.model.ThirdLevelAdministrativeDivision">
+    insert into third_level_administrative_division
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="thirdLevelId != null">
+        third_level_id,
+      </if>
+      <if test="firstLevelId != null">
+        first_level_id,
+      </if>
+      <if test="secondLevelId != null">
+        second_level_id,
+      </if>
+      <if test="thirdLevelName != null">
+        third_level_name,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="thirdLevelId != null">
+        #{thirdLevelId,jdbcType=INTEGER},
+      </if>
+      <if test="firstLevelId != null">
+        #{firstLevelId,jdbcType=INTEGER},
+      </if>
+      <if test="secondLevelId != null">
+        #{secondLevelId,jdbcType=INTEGER},
+      </if>
+      <if test="thirdLevelName != null">
+        #{thirdLevelName,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="pers.wangshun.supermarketserver.model.ThirdLevelAdministrativeDivision">
+    update third_level_administrative_division
+    <set>
+      <if test="firstLevelId != null">
+        first_level_id = #{firstLevelId,jdbcType=INTEGER},
+      </if>
+      <if test="secondLevelId != null">
+        second_level_id = #{secondLevelId,jdbcType=INTEGER},
+      </if>
+      <if test="thirdLevelName != null">
+        third_level_name = #{thirdLevelName,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where third_level_id = #{thirdLevelId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="pers.wangshun.supermarketserver.model.ThirdLevelAdministrativeDivision">
+    update third_level_administrative_division
+    set first_level_id = #{firstLevelId,jdbcType=INTEGER},
+      second_level_id = #{secondLevelId,jdbcType=INTEGER},
+      third_level_name = #{thirdLevelName,jdbcType=VARCHAR}
+    where third_level_id = #{thirdLevelId,jdbcType=INTEGER}
+  </update>
+</mapper>

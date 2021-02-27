@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="pers.wangshun.supermarketserver.mapper.ShopInfoMapper">
+  <resultMap id="BaseResultMap" type="pers.wangshun.supermarketserver.model.ShopInfo">
+    <id column="shop_id" jdbcType="BIGINT" property="shopId" />
+    <result column="shop_size" jdbcType="DECIMAL" property="shopSize" />
+    <result column="workers_number" jdbcType="INTEGER" property="workersNumber" />
+    <result column="shop_location" jdbcType="VARCHAR" property="shopLocation" />
+    <result column="monthly_rent" jdbcType="DECIMAL" property="monthlyRent" />
+    <result column="shop_deposit" jdbcType="DECIMAL" property="shopDeposit" />
+    <result column="shop_description" jdbcType="VARCHAR" property="shopDescription" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    shop_id, shop_size, workers_number, shop_location, monthly_rent, shop_deposit, shop_description
+  </sql>
+  <select id="selectByExample" parameterType="pers.wangshun.supermarketserver.model.ShopInfoExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from management_sys.shop_info
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from shop_info
+    where shop_id = #{shopId,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from shop_info
+    where shop_id = #{shopId,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="pers.wangshun.supermarketserver.model.ShopInfo">
+    insert into shop_info (shop_id, shop_size, workers_number, 
+      shop_location, monthly_rent, shop_deposit, 
+      shop_description)
+    values (#{shopId,jdbcType=BIGINT}, #{shopSize,jdbcType=DECIMAL}, #{workersNumber,jdbcType=INTEGER}, 
+      #{shopLocation,jdbcType=VARCHAR}, #{monthlyRent,jdbcType=DECIMAL}, #{shopDeposit,jdbcType=DECIMAL}, 
+      #{shopDescription,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="pers.wangshun.supermarketserver.model.ShopInfo">
+    insert into shop_info
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="shopId != null">
+        shop_id,
+      </if>
+      <if test="shopSize != null">
+        shop_size,
+      </if>
+      <if test="workersNumber != null">
+        workers_number,
+      </if>
+      <if test="shopLocation != null">
+        shop_location,
+      </if>
+      <if test="monthlyRent != null">
+        monthly_rent,
+      </if>
+      <if test="shopDeposit != null">
+        shop_deposit,
+      </if>
+      <if test="shopDescription != null">
+        shop_description,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="shopId != null">
+        #{shopId,jdbcType=BIGINT},
+      </if>
+      <if test="shopSize != null">
+        #{shopSize,jdbcType=DECIMAL},
+      </if>
+      <if test="workersNumber != null">
+        #{workersNumber,jdbcType=INTEGER},
+      </if>
+      <if test="shopLocation != null">
+        #{shopLocation,jdbcType=VARCHAR},
+      </if>
+      <if test="monthlyRent != null">
+        #{monthlyRent,jdbcType=DECIMAL},
+      </if>
+      <if test="shopDeposit != null">
+        #{shopDeposit,jdbcType=DECIMAL},
+      </if>
+      <if test="shopDescription != null">
+        #{shopDescription,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="pers.wangshun.supermarketserver.model.ShopInfo">
+    update shop_info
+    <set>
+      <if test="shopSize != null">
+        shop_size = #{shopSize,jdbcType=DECIMAL},
+      </if>
+      <if test="workersNumber != null">
+        workers_number = #{workersNumber,jdbcType=INTEGER},
+      </if>
+      <if test="shopLocation != null">
+        shop_location = #{shopLocation,jdbcType=VARCHAR},
+      </if>
+      <if test="monthlyRent != null">
+        monthly_rent = #{monthlyRent,jdbcType=DECIMAL},
+      </if>
+      <if test="shopDeposit != null">
+        shop_deposit = #{shopDeposit,jdbcType=DECIMAL},
+      </if>
+      <if test="shopDescription != null">
+        shop_description = #{shopDescription,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where shop_id = #{shopId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="pers.wangshun.supermarketserver.model.ShopInfo">
+    update shop_info
+    set shop_size = #{shopSize,jdbcType=DECIMAL},
+      workers_number = #{workersNumber,jdbcType=INTEGER},
+      shop_location = #{shopLocation,jdbcType=VARCHAR},
+      monthly_rent = #{monthlyRent,jdbcType=DECIMAL},
+      shop_deposit = #{shopDeposit,jdbcType=DECIMAL},
+      shop_description = #{shopDescription,jdbcType=VARCHAR}
+    where shop_id = #{shopId,jdbcType=BIGINT}
+  </update>
+</mapper>

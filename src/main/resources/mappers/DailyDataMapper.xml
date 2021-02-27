@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="pers.wangshun.supermarketserver.mapper.DailyDataMapper">
+  <resultMap id="BaseResultMap" type="pers.wangshun.supermarketserver.model.DailyData">
+    <id column="volume_id" jdbcType="INTEGER" property="volumeId" />
+    <result column="shop_id" jdbcType="BIGINT" property="shopId" />
+    <result column="today" jdbcType="TIMESTAMP" property="today" />
+    <result column="today_turnover" jdbcType="DECIMAL" property="todayTurnover" />
+    <result column="today_passenger_flow" jdbcType="INTEGER" property="todayPassengerFlow" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    volume_id, shop_id, today, today_turnover, today_passenger_flow
+  </sql>
+  <select id="selectByExample" parameterType="pers.wangshun.supermarketserver.model.DailyDataExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from daily_data
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from daily_data
+    where volume_id = #{volumeId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from daily_data
+    where volume_id = #{volumeId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="pers.wangshun.supermarketserver.model.DailyData">
+    insert into daily_data (volume_id, shop_id, today, 
+      today_turnover, today_passenger_flow)
+    values (#{volumeId,jdbcType=INTEGER}, #{shopId,jdbcType=BIGINT}, #{today,jdbcType=TIMESTAMP}, 
+      #{todayTurnover,jdbcType=DECIMAL}, #{todayPassengerFlow,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="pers.wangshun.supermarketserver.model.DailyData">
+    insert into daily_data
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="volumeId != null">
+        volume_id,
+      </if>
+      <if test="shopId != null">
+        shop_id,
+      </if>
+      <if test="today != null">
+        today,
+      </if>
+      <if test="todayTurnover != null">
+        today_turnover,
+      </if>
+      <if test="todayPassengerFlow != null">
+        today_passenger_flow,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="volumeId != null">
+        #{volumeId,jdbcType=INTEGER},
+      </if>
+      <if test="shopId != null">
+        #{shopId,jdbcType=BIGINT},
+      </if>
+      <if test="today != null">
+        #{today,jdbcType=TIMESTAMP},
+      </if>
+      <if test="todayTurnover != null">
+        #{todayTurnover,jdbcType=DECIMAL},
+      </if>
+      <if test="todayPassengerFlow != null">
+        #{todayPassengerFlow,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="pers.wangshun.supermarketserver.model.DailyData">
+    update daily_data
+    <set>
+      <if test="shopId != null">
+        shop_id = #{shopId,jdbcType=BIGINT},
+      </if>
+      <if test="today != null">
+        today = #{today,jdbcType=TIMESTAMP},
+      </if>
+      <if test="todayTurnover != null">
+        today_turnover = #{todayTurnover,jdbcType=DECIMAL},
+      </if>
+      <if test="todayPassengerFlow != null">
+        today_passenger_flow = #{todayPassengerFlow,jdbcType=INTEGER},
+      </if>
+    </set>
+    where volume_id = #{volumeId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="pers.wangshun.supermarketserver.model.DailyData">
+    update daily_data
+    set shop_id = #{shopId,jdbcType=BIGINT},
+      today = #{today,jdbcType=TIMESTAMP},
+      today_turnover = #{todayTurnover,jdbcType=DECIMAL},
+      today_passenger_flow = #{todayPassengerFlow,jdbcType=INTEGER}
+    where volume_id = #{volumeId,jdbcType=INTEGER}
+  </update>
+</mapper>

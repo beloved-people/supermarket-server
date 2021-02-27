@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<!-- saved from url=(0052)http://getbootstrap.com/docs/4.0/examples/dashboard/ -->
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <!-- Bootstrap core CSS -->
+    <link th:href="@{../asserts/css/bootstrap.min.css}" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link th:href="@{../asserts/css/dashboard.css}" rel="stylesheet">
+    <style type="text/css">
+        @-webkit-keyframes chartjs-render-animation {
+            from {
+                opacity: 0.99
+            }
+            to {
+                opacity: 1
+            }
+        }
+
+        @keyframes chartjs-render-animation {
+            from {
+                opacity: 0.99
+            }
+            to {
+                opacity: 1
+            }
+        }
+
+        .chartjs-render-monitor {
+            -webkit-animation: chartjs-render-animation 0.001s;
+            animation: chartjs-render-animation 0.001s;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+    </style>
+</head>
+
+<body>
+<div th:replace="commons/bar::topbar"></div>
+<div class="container-fluid">
+    <div class="row">
+        <!--引入侧边栏-->
+        <div th:replace="commons/bar::sidebar(activeUri='purchaseOrderChecks')"></div>
+        <main role="main" class="col-md-9 ml-sm-auto col-lg-10 pt-3 px-4">
+            <h2>Заполните квитанцию об оплате</h2>
+            <form th:action="@{/purchaseReceipt}" method="post">
+                <input type="hidden" name="_method" value="put">
+                <div class="form-group">
+                        <label for="purchaseReceiptNumber">Номер квитанции покупки</label>
+                        <input type="text" class="form-control" id="purchaseReceiptNumber" name="purchaseReceiptNumber" th:value="${purchaseReceiptNumber}">
+                </div>
+                <div class="form-group">
+                    <label for="associatedTicketId">Связанный идентификатор билета</label>
+                    <input type="text" class="form-control" id="associatedTicketId" name="associatedTicketId" th:value="${purchaseReceiptInfo ne null}?${purchaseReceiptInfo.associatedTicketId}">
+                </div>
+                <div class="form-group">
+                    <label for="purchaseAmount">Сумма покупки</label>
+                    <input type="text" class="form-control" id="purchaseAmount" name="purchaseAmount" th:value="${totalAmount}">
+                </div>
+                <div class="form-group">
+                    <label for="supplierName">Поставщик заказа на поставку</label>
+                    <select id="supplierName" class="form-control" name="supplierName">
+                        <option th:value="${null}">Выбирать...</option>
+                        <option th:each="supplierInfo : ${supplierInfos}" th:text="${supplierInfo.supplierName}"
+                                th:value="${supplierInfo.supplierId}"
+                                th:selected="${purchaseReceiptInfo ne null}?${purchaseReceiptInfo.supplierName eq supplierInfo.supplierId}"></option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="acceptor">Акцептант</label>
+                    <select id="acceptor" class="form-control" name="acceptor" required>
+                        <option th:value="${null}">Выбирать...</option>
+                        <option th:each="acceptor : ${employeeUsersOfAcceptor}" th:text="${acceptor.username}"
+                                th:value="${acceptor.employeeCode}"
+                                th:selected="${purchaseReceiptInfo ne null}?${purchaseReceiptInfo.acceptor eq acceptor.employeeCode}"></option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="purchaseReceiptUsername">Покупка квитанция имя пользователя</label>
+                    <input type="text" class="form-control" id="purchaseReceiptUsername" name="purchaseReceiptUsername"
+                           th:value="${purchaseReceiptInfo ne null}?${purchaseReceiptInfo.purchaseReceiptUsername}">
+                </div>
+                <div class="form-group">
+                    <label for="datetimepicker">Дата оплаты покупки</label>
+                    <div class="input-append date" id="datetimepicker" data-date="" data-date-format="dd/mm/yyyy">
+                        <input id="purchaseBillingDate" class="form-control" type="text"
+                               th:value="${purchaseReceiptInfo ne null}?${#dates.format(purchaseReceiptInfo.purchaseBillingDate,'dd/MM/yyyy')}"
+                               name="purchaseBillingDate">
+                        <span class="add-on"><i class="icon-th"></i></span>
+                    </div>
+                </div>
+                <fieldset class="form-group">
+                    <legend class="col-form-label pt-0">Покупка завершена</legend>
+                    <div class="custom-control custom-radio custom-control-inline">
+                        <input type="radio" id="purchaseFinishedCondition1" name="purchaseFinishedCondition"
+                               class="custom-control-input" value="00" checked
+                               th:checked="${purchaseReceiptInfo ne null}?${purchaseReceiptInfo.purchaseFinishedCondition eq '00'}">
+                        <label class="custom-control-label" for="purchaseFinishedCondition1">На ходу</label>
+                    </div>
+                    <div class="custom-control custom-radio custom-control-inline">
+                        <input type="radio" id="purchaseFinishedCondition2" name="purchaseFinishedCondition"
+                               class="custom-control-input" value="01"
+                               th:checked="${purchaseReceiptInfo ne null}?${purchaseReceiptInfo.purchaseFinishedCondition eq '01'}">
+                        <label class="custom-control-label" for="purchaseFinishedCondition2">Отменено</label>
+                    </div>
+                    <div class="custom-control custom-radio custom-control-inline">
+                        <input type="radio" id="purchaseFinishedCondition3" name="purchaseFinishedCondition"
+                               class="custom-control-input" value="02"
+                               th:checked="${purchaseReceiptInfo ne null}?${purchaseReceiptInfo.purchaseFinishedCondition eq '02'}">
+                        <label class="custom-control-label" for="purchaseFinishedCondition3">Нет</label>
+                    </div>
+                </fieldset>
+                <div class="form-group">
+                    <label for="purchaseRemarks">Покупка примечания</label>
+                    <input type="text" class="form-control" id="purchaseRemarks" name="purchaseRemarks"
+                           th:value="${purchaseReceiptInfo ne null}?${purchaseReceiptInfo.purchaseRemarks}">
+                </div>
+                <div class="form-group">
+                    <input type="submit" class="btn btn-primary" value="Представить">
+                </div>
+            </form>
+        </main>
+    </div>
+</div>
+
+<!-- Bootstrap core JavaScript
+================================================== -->
+<!-- Placed at the end of the document so the pages load faster -->
+<script type="text/javascript" src="../../asserts/js/jquery-3.2.1.slim.min.js"></script>
+<script type="text/javascript" src="../asserts/js/popper.min.js"></script>
+<script type="text/javascript" src="../asserts/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="../asserts/js/bootstrap-datetimepicker.min.js"></script>
+<script type="text/javascript" src="../asserts/js/locales/bootstrap-datetimepicker.ru.js"></script>
+
+<!-- Icons -->
+<script type="text/javascript" src="../asserts/js/feather.min.js"></script>
+<script>
+    feather.replace()
+</script>
+
+<!-- Graphs -->
+<script type="text/javascript" src="../asserts/js/Chart.min.js"></script>
+<script>
+    $('#datetimepicker').datetimepicker({
+        language: 'ru',
+        minView: 'month',
+        autoclose: true,
+        setStartDate: new Date(),
+        todayBtn: true,
+        todayHighlight: true,
+        keyboardNavigation: true
+    }).on('changeDate', function (ev) {
+        $(this).datetimepicker('hide');
+    });
+
+    $('#datetimepicker2').datetimepicker({
+        language: 'ru',
+        minView: 'month',
+        autoclose: true,
+        setStartDate: new Date(),
+        todayBtn: true,
+        todayHighlight: true,
+        keyboardNavigation: true
+    }).on('changeDate', function (ev) {
+        $(this).datetimepicker('hide');
+    });
+</script>
+
+</body>
+
+</html>

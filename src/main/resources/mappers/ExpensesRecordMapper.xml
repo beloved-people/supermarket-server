@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="pers.wangshun.supermarketserver.mapper.ExpensesRecordMapper">
+  <resultMap id="BaseResultMap" type="pers.wangshun.supermarketserver.model.ExpensesRecord">
+    <id column="invoice_number" jdbcType="BIGINT" property="invoiceNumber" />
+    <result column="shop_id" jdbcType="BIGINT" property="shopId" />
+    <result column="goods_bar_code" jdbcType="BIGINT" property="goodsBarCode" />
+    <result column="goods_name" jdbcType="VARCHAR" property="goodsName" />
+    <result column="goods_price" jdbcType="DECIMAL" property="goodsPrice" />
+    <result column="goods_quantity" jdbcType="INTEGER" property="goodsQuantity" />
+    <result column="total_price" jdbcType="DECIMAL" property="totalPrice" />
+    <result column="category_id" jdbcType="INTEGER" property="categoryId" />
+    <result column="print_time" jdbcType="TIMESTAMP" property="printTime" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    invoice_number, shop_id, goods_bar_code, goods_name, goods_price, goods_quantity, 
+    total_price, category_id, print_time
+  </sql>
+  <select id="selectByExample" parameterType="pers.wangshun.supermarketserver.model.ExpensesRecordExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from management_sys.expenses_record
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from management_sys.expenses_record
+    where invoice_number = #{invoiceNumber,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from management_sys.expenses_record
+    where invoice_number = #{invoiceNumber,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="pers.wangshun.supermarketserver.model.ExpensesRecord">
+    insert into management_sys.expenses_record (invoice_number, shop_id, goods_bar_code,
+      goods_name, goods_price, goods_quantity, 
+      total_price, category_id, print_time
+      )
+    values (#{invoiceNumber,jdbcType=BIGINT}, #{shopId,jdbcType=BIGINT}, #{goodsBarCode,jdbcType=BIGINT}, 
+      #{goodsName,jdbcType=VARCHAR}, #{goodsPrice,jdbcType=DECIMAL}, #{goodsQuantity,jdbcType=INTEGER}, 
+      #{totalPrice,jdbcType=DECIMAL}, #{categoryId,jdbcType=INTEGER}, #{printTime,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="pers.wangshun.supermarketserver.model.ExpensesRecord">
+    insert into management_sys.expenses_record
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="invoiceNumber != null">
+        invoice_number,
+      </if>
+      <if test="shopId != null">
+        shop_id,
+      </if>
+      <if test="goodsBarCode != null">
+        goods_bar_code,
+      </if>
+      <if test="goodsName != null">
+        goods_name,
+      </if>
+      <if test="goodsPrice != null">
+        goods_price,
+      </if>
+      <if test="goodsQuantity != null">
+        goods_quantity,
+      </if>
+      <if test="totalPrice != null">
+        total_price,
+      </if>
+      <if test="categoryId != null">
+        category_id,
+      </if>
+      <if test="printTime != null">
+        print_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="invoiceNumber != null">
+        #{invoiceNumber,jdbcType=BIGINT},
+      </if>
+      <if test="shopId != null">
+        #{shopId,jdbcType=BIGINT},
+      </if>
+      <if test="goodsBarCode != null">
+        #{goodsBarCode,jdbcType=BIGINT},
+      </if>
+      <if test="goodsName != null">
+        #{goodsName,jdbcType=VARCHAR},
+      </if>
+      <if test="goodsPrice != null">
+        #{goodsPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="goodsQuantity != null">
+        #{goodsQuantity,jdbcType=INTEGER},
+      </if>
+      <if test="totalPrice != null">
+        #{totalPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="categoryId != null">
+        #{categoryId,jdbcType=INTEGER},
+      </if>
+      <if test="printTime != null">
+        #{printTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="pers.wangshun.supermarketserver.model.ExpensesRecord">
+    update management_sys.expenses_record
+    <set>
+      <if test="shopId != null">
+        shop_id = #{shopId,jdbcType=BIGINT},
+      </if>
+      <if test="goodsBarCode != null">
+        goods_bar_code = #{goodsBarCode,jdbcType=BIGINT},
+      </if>
+      <if test="goodsName != null">
+        goods_name = #{goodsName,jdbcType=VARCHAR},
+      </if>
+      <if test="goodsPrice != null">
+        goods_price = #{goodsPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="goodsQuantity != null">
+        goods_quantity = #{goodsQuantity,jdbcType=INTEGER},
+      </if>
+      <if test="totalPrice != null">
+        total_price = #{totalPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="categoryId != null">
+        category_id = #{categoryId,jdbcType=INTEGER},
+      </if>
+      <if test="printTime != null">
+        print_time = #{printTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where invoice_number = #{invoiceNumber,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="pers.wangshun.supermarketserver.model.ExpensesRecord">
+    update management_sys.expenses_record
+    set shop_id = #{shopId,jdbcType=BIGINT},
+      goods_bar_code = #{goodsBarCode,jdbcType=BIGINT},
+      goods_name = #{goodsName,jdbcType=VARCHAR},
+      goods_price = #{goodsPrice,jdbcType=DECIMAL},
+      goods_quantity = #{goodsQuantity,jdbcType=INTEGER},
+      total_price = #{totalPrice,jdbcType=DECIMAL},
+      category_id = #{categoryId,jdbcType=INTEGER},
+      print_time = #{printTime,jdbcType=TIMESTAMP}
+    where invoice_number = #{invoiceNumber,jdbcType=BIGINT}
+  </update>
+</mapper>

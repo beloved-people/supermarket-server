@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="pers.wangshun.supermarketserver.mapper.PurchaseAccountingEntryInfoMapper">
+  <resultMap id="BaseResultMap" type="pers.wangshun.supermarketserver.model.PurchaseAccountingEntryInfo">
+    <id column="purchase_accounting_entry_id" jdbcType="BIGINT" property="purchaseAccountingEntryId" />
+    <result column="accounting_user" jdbcType="BIGINT" property="accountingUser" />
+    <result column="review_user" jdbcType="BIGINT" property="reviewUser" />
+    <result column="book_keeping_date" jdbcType="DATE" property="bookKeepingDate" />
+    <result column="review_date" jdbcType="DATE" property="reviewDate" />
+    <result column="finish_loading" jdbcType="CHAR" property="finishLoading" />
+    <result column="purchase_accounting_entry_remarks" jdbcType="VARCHAR" property="purchaseAccountingEntryRemarks" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    purchase_accounting_entry_id, accounting_user, review_user, book_keeping_date, review_date, 
+    finish_loading, purchase_accounting_entry_remarks
+  </sql>
+  <select id="selectByExample" parameterType="pers.wangshun.supermarketserver.model.PurchaseAccountingEntryInfoExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from management_sys.purchase_accounting_entry_info
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from management_sys.purchase_accounting_entry_info
+    where purchase_accounting_entry_id = #{purchaseAccountingEntryId,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from management_sys.purchase_accounting_entry_info
+    where purchase_accounting_entry_id = #{purchaseAccountingEntryId,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="pers.wangshun.supermarketserver.model.PurchaseAccountingEntryInfo">
+    insert into management_sys.purchase_accounting_entry_info (purchase_accounting_entry_id, accounting_user,
+      review_user, book_keeping_date, review_date, 
+      finish_loading, purchase_accounting_entry_remarks
+      )
+    values (#{purchaseAccountingEntryId,jdbcType=BIGINT}, #{accountingUser,jdbcType=BIGINT}, 
+      #{reviewUser,jdbcType=BIGINT}, #{bookKeepingDate,jdbcType=DATE}, #{reviewDate,jdbcType=DATE}, 
+      #{finishLoading,jdbcType=CHAR}, #{purchaseAccountingEntryRemarks,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="pers.wangshun.supermarketserver.model.PurchaseAccountingEntryInfo">
+    insert into management_sys.purchase_accounting_entry_info
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="purchaseAccountingEntryId != null">
+        purchase_accounting_entry_id,
+      </if>
+      <if test="accountingUser != null">
+        accounting_user,
+      </if>
+      <if test="reviewUser != null">
+        review_user,
+      </if>
+      <if test="bookKeepingDate != null">
+        book_keeping_date,
+      </if>
+      <if test="reviewDate != null">
+        review_date,
+      </if>
+      <if test="finishLoading != null">
+        finish_loading,
+      </if>
+      <if test="purchaseAccountingEntryRemarks != null">
+        purchase_accounting_entry_remarks,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="purchaseAccountingEntryId != null">
+        #{purchaseAccountingEntryId,jdbcType=BIGINT},
+      </if>
+      <if test="accountingUser != null">
+        #{accountingUser,jdbcType=BIGINT},
+      </if>
+      <if test="reviewUser != null">
+        #{reviewUser,jdbcType=BIGINT},
+      </if>
+      <if test="bookKeepingDate != null">
+        #{bookKeepingDate,jdbcType=DATE},
+      </if>
+      <if test="reviewDate != null">
+        #{reviewDate,jdbcType=DATE},
+      </if>
+      <if test="finishLoading != null">
+        #{finishLoading,jdbcType=CHAR},
+      </if>
+      <if test="purchaseAccountingEntryRemarks != null">
+        #{purchaseAccountingEntryRemarks,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="pers.wangshun.supermarketserver.model.PurchaseAccountingEntryInfo">
+    update management_sys.purchase_accounting_entry_info
+    <set>
+      <if test="accountingUser != null">
+        accounting_user = #{accountingUser,jdbcType=BIGINT},
+      </if>
+      <if test="reviewUser != null">
+        review_user = #{reviewUser,jdbcType=BIGINT},
+      </if>
+      <if test="bookKeepingDate != null">
+        book_keeping_date = #{bookKeepingDate,jdbcType=DATE},
+      </if>
+      <if test="reviewDate != null">
+        review_date = #{reviewDate,jdbcType=DATE},
+      </if>
+      <if test="finishLoading != null">
+        finish_loading = #{finishLoading,jdbcType=CHAR},
+      </if>
+      <if test="purchaseAccountingEntryRemarks != null">
+        purchase_accounting_entry_remarks = #{purchaseAccountingEntryRemarks,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where purchase_accounting_entry_id = #{purchaseAccountingEntryId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="pers.wangshun.supermarketserver.model.PurchaseAccountingEntryInfo">
+    update management_sys.purchase_accounting_entry_info
+    set accounting_user = #{accountingUser,jdbcType=BIGINT},
+      review_user = #{reviewUser,jdbcType=BIGINT},
+      book_keeping_date = #{bookKeepingDate,jdbcType=DATE},
+      review_date = #{reviewDate,jdbcType=DATE},
+      finish_loading = #{finishLoading,jdbcType=CHAR},
+      purchase_accounting_entry_remarks = #{purchaseAccountingEntryRemarks,jdbcType=VARCHAR}
+    where purchase_accounting_entry_id = #{purchaseAccountingEntryId,jdbcType=BIGINT}
+  </update>
+</mapper>

@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<!-- saved from url=(0052)http://getbootstrap.com/docs/4.0/examples/dashboard/ -->
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <!-- Bootstrap core CSS -->
+    <link th:href="@{../asserts/css/bootstrap.min.css}" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link th:href="@{../asserts/css/dashboard.css}" rel="stylesheet">
+    <style type="text/css">
+        @-webkit-keyframes chartjs-render-animation {
+            from {
+                opacity: 0.99
+            }
+            to {
+                opacity: 1
+            }
+        }
+
+        @keyframes chartjs-render-animation {
+            from {
+                opacity: 0.99
+            }
+            to {
+                opacity: 1
+            }
+        }
+
+        .chartjs-render-monitor {
+            -webkit-animation: chartjs-render-animation 0.001s;
+            animation: chartjs-render-animation 0.001s;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+    </style>
+</head>
+
+<body>
+<div th:replace="commons/bar::topbar"></div>
+<div class="container-fluid">
+    <div class="row">
+        <!--引入侧边栏-->
+        <div th:replace="commons/bar::sidebar(activeUri='suppliers')"></div>
+        <main role="main" class="col-md-9 ml-sm-auto col-lg-10 pt-3 px-4">
+            <th:block th:if="${supplier ne null}">
+                <h2>Изменить</h2>
+            </th:block>
+            <th:block th:if="${supplier eq null}">
+                <h2>Добавить</h2>
+            </th:block>
+            <form th:action="@{/supplier}" method="post">
+                <input type="hidden" name="_method" value="put" th:if="${supplier ne null}">
+                <div class="form-group hidden">
+                    <th:block th:if="${supplier ne null}">
+                        <label for="supplierId2">Идентификатор магазина</label>
+                        <input type="text" class="form-control" id="supplierId2" name="supplierId" th:value="${supplier ne null}?${supplier.supplierId}">
+                    </th:block>
+                    <th:block th:if="${supplier eq null}">
+                        <label for="supplierId">Идентификатор магазина</label>
+                        <input type="text" id="supplierId" class="form-control" name="supplierId">
+                    </th:block>
+                </div>
+                <div class="form-group">
+                    <label for="supplierName">Наименование поставщика</label>
+                    <input type="text" class="form-control" id="supplierName" name="supplierName" th:value="${supplier ne null}?${supplier.supplierName}" required>
+                </div>
+                <div class="form-group">
+                    <label for="inputFourthLevel">Зона поставщиков</label>
+                    <select id="inputFourthLevel" class="form-control" name="supplierArea">
+                        <option>Выбирать...</option>
+                        <option th:each="second : ${secondLevel}" th:text="${second.secondLevelName}" th:value="${second.secondLevelName}" th:selected="${supplier ne null}?${supplier.supplierArea eq second.secondLevelName}"></option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="supplierContactNumber">Контактный номер поставщика</label>
+                    <input type="text" class="form-control" id="supplierContactNumber" name="supplierContactNumber" th:value="${supplier ne null}?${supplier.supplierContactNumber}" required>
+                </div>
+                <div class="form-group">
+                    <label for="supplierContactPerson">Контактное лицо поставщика</label>
+                    <input type="text" class="form-control" id="supplierContactPerson" name="supplierContactPerson" th:value="${supplier ne null}?${supplier.supplierContactPerson}" required>
+                </div>
+                <div class="form-group">
+                    <label for="supplierPhone">Телефон поставщика</label>
+                    <input type="text" class="form-control" id="supplierPhone" name="supplierPhone" th:value="${supplier ne null}?${supplier.supplierPhone}" required>
+                </div>
+                <div class="form-group">
+                    <label for="supplierEmail">Электронная почта поставщика</label>
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text" id="inputGroupPrepend">@</span>
+                        </div>
+                        <input type="text" class="form-control" id="supplierEmail" name="supplierEmail" th:value="${supplier ne null}?${supplier.supplierEmail}" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="supplierTelephone">Телефон поставщика</label>
+                    <input type="text" class="form-control" id="supplierTelephone" name="supplierTelephone" th:value="${supplier ne null}?${supplier.supplierTelephone}" required>
+                </div>
+                <div class="form-group">
+                    <label for="supplierDepositBank">Поставщик депозитного банка</label>
+                    <input type="text" class="form-control" id="supplierDepositBank" name="supplierDepositBank" th:value="${supplier ne null}?${supplier.supplierDepositBank}" required>
+                </div>
+                <div class="form-group">
+                    <label for="supplierBankAccount">Банковский счет поставщика</label>
+                    <input type="text" class="form-control" id="supplierBankAccount" name="supplierBankAccount" th:value="${supplier ne null}?${supplier.supplierBankAccount}" required>
+                </div>
+                <div class="form-group">
+                    <label for="supplierSite">Сайт поставщика</label>
+                    <input type="text" class="form-control" id="supplierSite" name="supplierSite" th:value="${supplier ne null}?${supplier.supplierSite}" required>
+                </div>
+                <div class="form-group">
+                    <label for="supplierRemarks">Замечания поставщика</label>
+                    <input type="text" class="form-control" id="supplierRemarks" name="supplierRemarks" th:value="${supplier ne null}?${supplier.supplierRemarks}">
+                </div>
+                <div class="modal-footer">
+                    <input type="submit" class="btn btn-primary" value="Разместить" onclick="createSupplier()">
+                </div>
+            </form>
+        </main>
+    </div>
+</div>
+
+<!-- Bootstrap core JavaScript
+================================================== -->
+<!-- Placed at the end of the document so the pages load faster -->
+<script type="text/javascript" src="../../asserts/js/jquery-3.2.1.slim.min.js"></script>
+<script type="text/javascript" src="../asserts/js/popper.min.js"></script>
+<script type="text/javascript" src="../asserts/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="../asserts/js/bootstrap-datetimepicker.min.js"></script>
+<script type="text/javascript" src="../asserts/js/locales/bootstrap-datetimepicker.ru.js"></script>
+
+<!-- Icons -->
+<script type="text/javascript" src="../asserts/js/feather.min.js"></script>
+<script>
+    feather.replace()
+</script>
+
+<!-- Graphs -->
+<script type="text/javascript" src="../asserts/js/Chart.min.js"></script>
+
+<script>
+    function createSupplier() {
+        $('#supplierId').val('3'+new Date().getMilliseconds());
+    }
+</script>
+
+</body>
+
+</html>

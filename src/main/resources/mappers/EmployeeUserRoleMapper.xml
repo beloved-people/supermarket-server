@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="pers.wangshun.supermarketserver.mapper.EmployeeUserRoleMapper">
+    <resultMap id="BaseResultMap" type="pers.wangshun.supermarketserver.model.EmployeeUserRoleExample">
+        <association property="employeeUserExample" javaType="pers.wangshun.supermarketserver.model.EmployeeUserExample"/>
+        <association property="roleExample" javaType="pers.wangshun.supermarketserver.model.RoleExample"/>
+    </resultMap>
+    <select id="selectByName" parameterType="pers.wangshun.supermarketserver.model.EmployeeUserRoleExample" resultMap="BaseResultMap">
+        select
+        <include refid="pers.wangshun.supermarketserver.mapper.EmployeeUserMapper.Base_Column_List_Complex"/>,
+        <include refid="pers.wangshun.supermarketserver.mapper.RoleMapper.Base_Column_List_Complex"/>
+        from management_sys.employee_user
+        left join management_sys.user_role
+        on management_sys.employee_user.id = management_sys.user_role.user_id
+        left join management_sys.role
+        on management_sys.user_role.role_id = management_sys.role.id
+        <if test="_parameter != null">
+            <where>
+                <trim prefix="(" prefixOverrides="and" suffix=")">
+                    <include
+                            refid="pers.wangshun.supermarketserver.mapper.EmployeeUserMapper.Example_Where_Clause_Complex"/>
+                    <include
+                            refid="pers.wangshun.supermarketserver.mapper.RoleMapper.Example_Where_Clause_Complex"/>
+                </trim>
+            </where>
+        </if>
+        <if test="EmployeeUserExample.orderByClause != null">
+            order by ${orderByClause}
+        </if>
+    </select>
+</mapper>

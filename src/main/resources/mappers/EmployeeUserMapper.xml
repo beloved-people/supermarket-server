@@ -1,0 +1,361 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="pers.wangshun.supermarketserver.mapper.EmployeeUserMapper">
+  <resultMap id="BaseResultMap" type="pers.wangshun.supermarketserver.model.EmployeeUser">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="username" jdbcType="VARCHAR" property="username" />
+    <result column="password" jdbcType="VARCHAR" property="password" />
+    <result column="employee_code" jdbcType="BIGINT" property="employeeCode" />
+    <result column="employee_gender" jdbcType="CHAR" property="employeeGender" />
+    <result column="employee_phone" jdbcType="VARCHAR" property="employeePhone" />
+    <result column="employee_location" jdbcType="VARCHAR" property="employeeLocation" />
+    <result column="employee_birthday" jdbcType="DATE" property="employeeBirthday" />
+    <result column="employee_entry_date" jdbcType="DATE" property="employeeEntryDate" />
+    <result column="employee_bankcard" jdbcType="VARCHAR" property="employeeBankcard" />
+    <result column="employee_is_headquarter" jdbcType="CHAR" property="employeeIsHeadquarter" />
+    <result column="employee_salary" jdbcType="DECIMAL" property="employeeSalary" />
+    <result column="employee_shop_id" jdbcType="BIGINT" property="employeeShopId" />
+    <result column="enabled" jdbcType="BIT" property="enabled" />
+    <result column="locked" jdbcType="BIT" property="locked" />
+    <collection property="roles" ofType="pers.wangshun.supermarketserver.model.Role">
+      <id column="id" property="id"/>
+      <result column="name" property="name"/>
+      <result column="description" property="description"/>
+    </collection>
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Example_Where_Clause_Complex">
+    <foreach collection="EmployeeUserExample.oredCriteria" item="criteria" separator="or">
+      <if test="criteria.valid">
+        <foreach collection="criteria.criteria" item="criterion">
+          <choose>
+            <when test="criterion.noValue">
+              and EmployeeUser.${criterion.condition}
+            </when>
+            <when test="criterion.singleValue">
+              and EmployeeUser.${criterion.condition} #{criterion.value}
+            </when>
+            <when test="criterion.betweenValue">
+              and EmployeeUser.${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+            </when>
+            <when test="criterion.listValue">
+              and EmployeeUser.${criterion.condition}
+                <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                  #{listItem}
+                </foreach>
+            </when>
+          </choose>
+        </foreach>
+      </if>
+    </foreach>
+  </sql>
+  <sql id="Base_Column_List">
+    id, username, password, employee_code, employee_gender, employee_phone, employee_location,
+    employee_birthday, employee_entry_date, employee_bankcard, employee_is_headquarter,
+    employee_salary, employee_shop_id, enabled, locked
+  </sql>
+  <sql id="Base_Column_List_Complex">
+    employee_user.id, employee_user.username, employee_user.password, employee_user.employee_code, employee_user.employee_gender, employee_user.employee_phone, employee_user.employee_location,
+    employee_user.employee_birthday, employee_user.employee_entry_date, employee_user.employee_bankcard, employee_user.employee_is_headquarter,
+    employee_user.employee_salary, employee_user.employee_shop_id, employee_user.enabled, employee_user.locked
+  </sql>
+  <select id="selectByExample" parameterType="pers.wangshun.supermarketserver.model.EmployeeUserExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+      eu.id, username, password, employee_code, employee_gender, employee_phone, employee_location,
+      employee_birthday, employee_entry_date, employee_bankcard, employee_is_headquarter,
+      employee_salary, employee_shop_id, enabled, locked, name, description
+      from management_sys.employee_user eu
+      left join management_sys.user_role
+      on eu.id = management_sys.user_role.user_id
+      left join management_sys.role
+      on management_sys.user_role.role_id = role.id
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from management_sys.employee_user
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select *
+    from management_sys.employee_user,
+         management_sys.user_role,
+         management_sys.role,
+         management_sys.shop_info
+    where management_sys.employee_user.id = management_sys.user_role.user_id
+      and management_sys.user_role.role_id = management_sys.role.id
+  </select>
+  <select id="selectByUsernameAndPassword" resultMap="BaseResultMap">
+  select *
+    from management_sys.employee_user,
+         management_sys.user_role,
+         management_sys.role,
+         management_sys.shop_info
+    where management_sys.employee_user.id = management_sys.user_role.user_id
+      and management_sys.user_role.role_id = management_sys.role.id
+      and username = #{username}
+      and password = #{password}
+  </select>
+  <select id="selectByEmployeeShopId" resultType="pers.wangshun.supermarketserver.model.EmployeeUser" parameterType="java.lang.Long">
+    select
+    <include refid="Base_Column_List" />
+      from management_sys.employee_user
+     where employee_shop_id=#{employeeShopId}
+  </select>
+  <select id="login" resultType="pers.wangshun.supermarketserver.model.EmployeeUser" resultMap="BaseResultMap">
+    select *
+    from management_sys.employee_user
+           left join management_sys.user_role
+                     on management_sys.employee_user.id = management_sys.user_role.user_id
+           left join management_sys.role
+                     on management_sys.user_role.role_id = role.id
+    where management_sys.employee_user.employee_code = #{employeeCode}
+      and management_sys.employee_user.username=#{username}
+      and management_sys.employee_user.password = #{password}
+  </select>
+    <select id="selectByEmployeeCodeAndPassword"
+            resultType="pers.wangshun.supermarketserver.model.EmployeeUser" resultMap="BaseResultMap">
+      select *
+      from management_sys.employee_user
+             left join management_sys.user_role
+                       on management_sys.employee_user.id = management_sys.user_role.user_id
+             left join management_sys.role
+                       on management_sys.user_role.role_id = role.id
+      where management_sys.employee_user.employee_code = #{employeeCode}
+        and management_sys.employee_user.password = #{password}
+    </select>
+  <select id="selectById" resultType="pers.wangshun.supermarketserver.model.EmployeeUser" resultMap="BaseResultMap">
+    select eu.id, eu.username, eu.password, eu.employee_code, eu.employee_gender, eu.employee_phone, eu.employee_location,
+           eu.employee_birthday, eu.employee_entry_date, eu.employee_bankcard, eu.employee_is_headquarter,
+           eu.employee_salary, eu.employee_shop_id
+    from management_sys.employee_user eu
+           left join management_sys.user_role
+                     on eu.id = management_sys.user_role.user_id
+           left join management_sys.role r
+                     on management_sys.user_role.role_id = r.id
+    where eu.id=#{id,jdbcType=INTEGER};
+  </select>
+  <select id="selectByEmployeeCode" resultType="pers.wangshun.supermarketserver.model.EmployeeUser" resultMap="BaseResultMap">
+    select *
+      from management_sys.employee_user
+    where employee_code=#{employeeCode,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from management_sys.employee_user
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="pers.wangshun.supermarketserver.model.EmployeeUser">
+    insert into management_sys.employee_user (id, username, password,
+      employee_code, employee_gender, employee_phone, 
+      employee_location, employee_birthday, employee_entry_date, 
+      employee_bankcard, employee_is_headquarter, employee_salary, 
+      employee_shop_id, enabled, locked
+      )
+    values (#{id,jdbcType=INTEGER}, #{username,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, 
+      #{employeeCode,jdbcType=BIGINT}, #{employeeGender,jdbcType=CHAR}, #{employeePhone,jdbcType=VARCHAR}, 
+      #{employeeLocation,jdbcType=VARCHAR}, #{employeeBirthday,jdbcType=DATE}, #{employeeEntryDate,jdbcType=DATE}, 
+      #{employeeBankcard,jdbcType=VARCHAR}, #{employeeIsHeadquarter,jdbcType=CHAR}, #{employeeSalary,jdbcType=DECIMAL}, 
+      #{employeeShopId,jdbcType=BIGINT}, #{enabled,jdbcType=BIT}, #{locked,jdbcType=BIT}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="pers.wangshun.supermarketserver.model.EmployeeUser">
+    insert into management_sys.employee_user
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="username != null">
+        username,
+      </if>
+      <if test="password != null">
+        password,
+      </if>
+      <if test="employeeCode != null">
+        employee_code,
+      </if>
+      <if test="employeeGender != null">
+        employee_gender,
+      </if>
+      <if test="employeePhone != null">
+        employee_phone,
+      </if>
+      <if test="employeeLocation != null">
+        employee_location,
+      </if>
+      <if test="employeeBirthday != null">
+        employee_birthday,
+      </if>
+      <if test="employeeEntryDate != null">
+        employee_entry_date,
+      </if>
+      <if test="employeeBankcard != null">
+        employee_bankcard,
+      </if>
+      <if test="employeeIsHeadquarter != null">
+        employee_is_headquarter,
+      </if>
+      <if test="employeeSalary != null">
+        employee_salary,
+      </if>
+      <if test="employeeShopId != null">
+        employee_shop_id,
+      </if>
+      <if test="enabled != null">
+        enabled,
+      </if>
+      <if test="locked != null">
+        locked,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="username != null">
+        #{username,jdbcType=VARCHAR},
+      </if>
+      <if test="password != null">
+        #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="employeeCode != null">
+        #{employeeCode,jdbcType=BIGINT},
+      </if>
+      <if test="employeeGender != null">
+        #{employeeGender,jdbcType=CHAR},
+      </if>
+      <if test="employeePhone != null">
+        #{employeePhone,jdbcType=VARCHAR},
+      </if>
+      <if test="employeeLocation != null">
+        #{employeeLocation,jdbcType=VARCHAR},
+      </if>
+      <if test="employeeBirthday != null">
+        #{employeeBirthday,jdbcType=DATE},
+      </if>
+      <if test="employeeEntryDate != null">
+        #{employeeEntryDate,jdbcType=DATE},
+      </if>
+      <if test="employeeBankcard != null">
+        #{employeeBankcard,jdbcType=VARCHAR},
+      </if>
+      <if test="employeeIsHeadquarter != null">
+        #{employeeIsHeadquarter,jdbcType=CHAR},
+      </if>
+      <if test="employeeSalary != null">
+        #{employeeSalary,jdbcType=DECIMAL},
+      </if>
+      <if test="employeeShopId != null">
+        #{employeeShopId,jdbcType=BIGINT},
+      </if>
+      <if test="enabled != null">
+        #{enabled,jdbcType=BIT},
+      </if>
+      <if test="locked != null">
+        #{locked,jdbcType=BIT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="pers.wangshun.supermarketserver.model.EmployeeUser">
+    update management_sys.employee_user
+    <set>
+      <if test="username != null">
+        username = #{username,jdbcType=VARCHAR},
+      </if>
+      <if test="password != null">
+        password = #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="employeeCode != null">
+        employee_code = #{employeeCode,jdbcType=BIGINT},
+      </if>
+      <if test="employeeGender != null">
+        employee_gender = #{employeeGender,jdbcType=CHAR},
+      </if>
+      <if test="employeePhone != null">
+        employee_phone = #{employeePhone,jdbcType=VARCHAR},
+      </if>
+      <if test="employeeLocation != null">
+        employee_location = #{employeeLocation,jdbcType=VARCHAR},
+      </if>
+      <if test="employeeBirthday != null">
+        employee_birthday = #{employeeBirthday,jdbcType=DATE},
+      </if>
+      <if test="employeeEntryDate != null">
+        employee_entry_date = #{employeeEntryDate,jdbcType=DATE},
+      </if>
+      <if test="employeeBankcard != null">
+        employee_bankcard = #{employeeBankcard,jdbcType=VARCHAR},
+      </if>
+      <if test="employeeIsHeadquarter != null">
+        employee_is_headquarter = #{employeeIsHeadquarter,jdbcType=CHAR},
+      </if>
+      <if test="employeeSalary != null">
+        employee_salary = #{employeeSalary,jdbcType=DECIMAL},
+      </if>
+      <if test="employeeShopId != null">
+        employee_shop_id = #{employeeShopId,jdbcType=BIGINT},
+      </if>
+      <if test="enabled != null">
+        enabled = #{enabled,jdbcType=BIT},
+      </if>
+      <if test="locked != null">
+        locked = #{locked,jdbcType=BIT},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="pers.wangshun.supermarketserver.model.EmployeeUser">
+    update management_sys.employee_user
+    set username = #{username,jdbcType=VARCHAR},
+      password = #{password,jdbcType=VARCHAR},
+      employee_code = #{employeeCode,jdbcType=BIGINT},
+      employee_gender = #{employeeGender,jdbcType=CHAR},
+      employee_phone = #{employeePhone,jdbcType=VARCHAR},
+      employee_location = #{employeeLocation,jdbcType=VARCHAR},
+      employee_birthday = #{employeeBirthday,jdbcType=DATE},
+      employee_entry_date = #{employeeEntryDate,jdbcType=DATE},
+      employee_bankcard = #{employeeBankcard,jdbcType=VARCHAR},
+      employee_is_headquarter = #{employeeIsHeadquarter,jdbcType=CHAR},
+      employee_salary = #{employeeSalary,jdbcType=DECIMAL},
+      employee_shop_id = #{employeeShopId,jdbcType=BIGINT},
+      enabled = #{enabled,jdbcType=BIT},
+      locked = #{locked,jdbcType=BIT}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

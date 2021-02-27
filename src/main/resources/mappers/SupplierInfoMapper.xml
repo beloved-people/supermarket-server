@@ -1,0 +1,221 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="pers.wangshun.supermarketserver.mapper.SupplierInfoMapper">
+  <resultMap id="BaseResultMap" type="pers.wangshun.supermarketserver.model.SupplierInfo">
+    <id column="supplier_id" jdbcType="INTEGER" property="supplierId" />
+    <result column="supplier_name" jdbcType="VARCHAR" property="supplierName" />
+    <result column="supplier_area" jdbcType="VARCHAR" property="supplierArea" />
+    <result column="supplier_contact_number" jdbcType="VARCHAR" property="supplierContactNumber" />
+    <result column="supplier_contact_person" jdbcType="VARCHAR" property="supplierContactPerson" />
+    <result column="supplier_phone" jdbcType="VARCHAR" property="supplierPhone" />
+    <result column="supplier_email" jdbcType="VARCHAR" property="supplierEmail" />
+    <result column="supplier_telephone" jdbcType="VARCHAR" property="supplierTelephone" />
+    <result column="supplier_deposit_bank" jdbcType="VARCHAR" property="supplierDepositBank" />
+    <result column="supplier_bank_account" jdbcType="VARCHAR" property="supplierBankAccount" />
+    <result column="supplier_site" jdbcType="VARCHAR" property="supplierSite" />
+    <result column="supplier_remarks" jdbcType="VARCHAR" property="supplierRemarks" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    supplier_id, supplier_name, supplier_area, supplier_contact_number, supplier_contact_person, 
+    supplier_phone, supplier_email, supplier_telephone, supplier_deposit_bank, supplier_bank_account, 
+    supplier_site, supplier_remarks
+  </sql>
+  <select id="selectByExample" parameterType="pers.wangshun.supermarketserver.model.SupplierInfoExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from supplier_info
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from supplier_info
+    where supplier_id = #{supplierId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from supplier_info
+    where supplier_id = #{supplierId,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="pers.wangshun.supermarketserver.model.SupplierInfo">
+    insert into supplier_info (supplier_id, supplier_name, supplier_area, 
+      supplier_contact_number, supplier_contact_person, 
+      supplier_phone, supplier_email, supplier_telephone, 
+      supplier_deposit_bank, supplier_bank_account, 
+      supplier_site, supplier_remarks)
+    values (#{supplierId,jdbcType=INTEGER}, #{supplierName,jdbcType=VARCHAR}, #{supplierArea,jdbcType=VARCHAR}, 
+      #{supplierContactNumber,jdbcType=VARCHAR}, #{supplierContactPerson,jdbcType=VARCHAR}, 
+      #{supplierPhone,jdbcType=VARCHAR}, #{supplierEmail,jdbcType=VARCHAR}, #{supplierTelephone,jdbcType=VARCHAR}, 
+      #{supplierDepositBank,jdbcType=VARCHAR}, #{supplierBankAccount,jdbcType=VARCHAR}, 
+      #{supplierSite,jdbcType=VARCHAR}, #{supplierRemarks,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="pers.wangshun.supermarketserver.model.SupplierInfo">
+    insert into supplier_info
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="supplierId != null">
+        supplier_id,
+      </if>
+      <if test="supplierName != null">
+        supplier_name,
+      </if>
+      <if test="supplierArea != null">
+        supplier_area,
+      </if>
+      <if test="supplierContactNumber != null">
+        supplier_contact_number,
+      </if>
+      <if test="supplierContactPerson != null">
+        supplier_contact_person,
+      </if>
+      <if test="supplierPhone != null">
+        supplier_phone,
+      </if>
+      <if test="supplierEmail != null">
+        supplier_email,
+      </if>
+      <if test="supplierTelephone != null">
+        supplier_telephone,
+      </if>
+      <if test="supplierDepositBank != null">
+        supplier_deposit_bank,
+      </if>
+      <if test="supplierBankAccount != null">
+        supplier_bank_account,
+      </if>
+      <if test="supplierSite != null">
+        supplier_site,
+      </if>
+      <if test="supplierRemarks != null">
+        supplier_remarks,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="supplierId != null">
+        #{supplierId,jdbcType=INTEGER},
+      </if>
+      <if test="supplierName != null">
+        #{supplierName,jdbcType=VARCHAR},
+      </if>
+      <if test="supplierArea != null">
+        #{supplierArea,jdbcType=VARCHAR},
+      </if>
+      <if test="supplierContactNumber != null">
+        #{supplierContactNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="supplierContactPerson != null">
+        #{supplierContactPerson,jdbcType=VARCHAR},
+      </if>
+      <if test="supplierPhone != null">
+        #{supplierPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="supplierEmail != null">
+        #{supplierEmail,jdbcType=VARCHAR},
+      </if>
+      <if test="supplierTelephone != null">
+        #{supplierTelephone,jdbcType=VARCHAR},
+      </if>
+      <if test="supplierDepositBank != null">
+        #{supplierDepositBank,jdbcType=VARCHAR},
+      </if>
+      <if test="supplierBankAccount != null">
+        #{supplierBankAccount,jdbcType=VARCHAR},
+      </if>
+      <if test="supplierSite != null">
+        #{supplierSite,jdbcType=VARCHAR},
+      </if>
+      <if test="supplierRemarks != null">
+        #{supplierRemarks,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="pers.wangshun.supermarketserver.model.SupplierInfo">
+    update supplier_info
+    <set>
+      <if test="supplierName != null">
+        supplier_name = #{supplierName,jdbcType=VARCHAR},
+      </if>
+      <if test="supplierArea != null">
+        supplier_area = #{supplierArea,jdbcType=VARCHAR},
+      </if>
+      <if test="supplierContactNumber != null">
+        supplier_contact_number = #{supplierContactNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="supplierContactPerson != null">
+        supplier_contact_person = #{supplierContactPerson,jdbcType=VARCHAR},
+      </if>
+      <if test="supplierPhone != null">
+        supplier_phone = #{supplierPhone,jdbcType=VARCHAR},
+      </if>
+      <if test="supplierEmail != null">
+        supplier_email = #{supplierEmail,jdbcType=VARCHAR},
+      </if>
+      <if test="supplierTelephone != null">
+        supplier_telephone = #{supplierTelephone,jdbcType=VARCHAR},
+      </if>
+      <if test="supplierDepositBank != null">
+        supplier_deposit_bank = #{supplierDepositBank,jdbcType=VARCHAR},
+      </if>
+      <if test="supplierBankAccount != null">
+        supplier_bank_account = #{supplierBankAccount,jdbcType=VARCHAR},
+      </if>
+      <if test="supplierSite != null">
+        supplier_site = #{supplierSite,jdbcType=VARCHAR},
+      </if>
+      <if test="supplierRemarks != null">
+        supplier_remarks = #{supplierRemarks,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where supplier_id = #{supplierId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="pers.wangshun.supermarketserver.model.SupplierInfo">
+    update supplier_info
+    set supplier_name = #{supplierName,jdbcType=VARCHAR},
+      supplier_area = #{supplierArea,jdbcType=VARCHAR},
+      supplier_contact_number = #{supplierContactNumber,jdbcType=VARCHAR},
+      supplier_contact_person = #{supplierContactPerson,jdbcType=VARCHAR},
+      supplier_phone = #{supplierPhone,jdbcType=VARCHAR},
+      supplier_email = #{supplierEmail,jdbcType=VARCHAR},
+      supplier_telephone = #{supplierTelephone,jdbcType=VARCHAR},
+      supplier_deposit_bank = #{supplierDepositBank,jdbcType=VARCHAR},
+      supplier_bank_account = #{supplierBankAccount,jdbcType=VARCHAR},
+      supplier_site = #{supplierSite,jdbcType=VARCHAR},
+      supplier_remarks = #{supplierRemarks,jdbcType=VARCHAR}
+    where supplier_id = #{supplierId,jdbcType=INTEGER}
+  </update>
+</mapper>

@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="pers.wangshun.supermarketserver.mapper.GoodsTransferInfoMapper">
+  <resultMap id="BaseResultMap" type="pers.wangshun.supermarketserver.model.GoodsTransferInfo">
+    <id column="goods_transfer_info_id" jdbcType="BIGINT" property="goodsTransferInfoId" />
+    <result column="merchandiser" jdbcType="BIGINT" property="merchandiser" />
+    <result column="commodity_inspector" jdbcType="BIGINT" property="commodityInspector" />
+    <result column="transfer_to_warehouse" jdbcType="BIGINT" property="transferToWarehouse" />
+    <result column="call_out_warehouse" jdbcType="BIGINT" property="callOutWarehouse" />
+    <result column="call_out_date" jdbcType="DATE" property="callOutDate" />
+    <result column="acceptance_date" jdbcType="DATE" property="acceptanceDate" />
+    <result column="goods_transfer_state" jdbcType="CHAR" property="goodsTransferState" />
+    <result column="product_transfer_remarks" jdbcType="VARCHAR" property="productTransferRemarks" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    goods_transfer_info_id, merchandiser, commodity_inspector, transfer_to_warehouse, 
+    call_out_warehouse, call_out_date, acceptance_date, goods_transfer_state, product_transfer_remarks
+  </sql>
+  <select id="selectByExample" parameterType="pers.wangshun.supermarketserver.model.GoodsTransferInfoExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from goods_transfer_info
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from goods_transfer_info
+    where goods_transfer_info_id = #{goodsTransferInfoId,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from goods_transfer_info
+    where goods_transfer_info_id = #{goodsTransferInfoId,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="pers.wangshun.supermarketserver.model.GoodsTransferInfo">
+    insert into goods_transfer_info (goods_transfer_info_id, merchandiser, 
+      commodity_inspector, transfer_to_warehouse, 
+      call_out_warehouse, call_out_date, acceptance_date, 
+      goods_transfer_state, product_transfer_remarks
+      )
+    values (#{goodsTransferInfoId,jdbcType=BIGINT}, #{merchandiser,jdbcType=BIGINT}, 
+      #{commodityInspector,jdbcType=BIGINT}, #{transferToWarehouse,jdbcType=BIGINT}, 
+      #{callOutWarehouse,jdbcType=BIGINT}, #{callOutDate,jdbcType=DATE}, #{acceptanceDate,jdbcType=DATE}, 
+      #{goodsTransferState,jdbcType=CHAR}, #{productTransferRemarks,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="pers.wangshun.supermarketserver.model.GoodsTransferInfo">
+    insert into goods_transfer_info
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="goodsTransferInfoId != null">
+        goods_transfer_info_id,
+      </if>
+      <if test="merchandiser != null">
+        merchandiser,
+      </if>
+      <if test="commodityInspector != null">
+        commodity_inspector,
+      </if>
+      <if test="transferToWarehouse != null">
+        transfer_to_warehouse,
+      </if>
+      <if test="callOutWarehouse != null">
+        call_out_warehouse,
+      </if>
+      <if test="callOutDate != null">
+        call_out_date,
+      </if>
+      <if test="acceptanceDate != null">
+        acceptance_date,
+      </if>
+      <if test="goodsTransferState != null">
+        goods_transfer_state,
+      </if>
+      <if test="productTransferRemarks != null">
+        product_transfer_remarks,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="goodsTransferInfoId != null">
+        #{goodsTransferInfoId,jdbcType=BIGINT},
+      </if>
+      <if test="merchandiser != null">
+        #{merchandiser,jdbcType=BIGINT},
+      </if>
+      <if test="commodityInspector != null">
+        #{commodityInspector,jdbcType=BIGINT},
+      </if>
+      <if test="transferToWarehouse != null">
+        #{transferToWarehouse,jdbcType=BIGINT},
+      </if>
+      <if test="callOutWarehouse != null">
+        #{callOutWarehouse,jdbcType=BIGINT},
+      </if>
+      <if test="callOutDate != null">
+        #{callOutDate,jdbcType=DATE},
+      </if>
+      <if test="acceptanceDate != null">
+        #{acceptanceDate,jdbcType=DATE},
+      </if>
+      <if test="goodsTransferState != null">
+        #{goodsTransferState,jdbcType=CHAR},
+      </if>
+      <if test="productTransferRemarks != null">
+        #{productTransferRemarks,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="pers.wangshun.supermarketserver.model.GoodsTransferInfo">
+    update goods_transfer_info
+    <set>
+      <if test="merchandiser != null">
+        merchandiser = #{merchandiser,jdbcType=BIGINT},
+      </if>
+      <if test="commodityInspector != null">
+        commodity_inspector = #{commodityInspector,jdbcType=BIGINT},
+      </if>
+      <if test="transferToWarehouse != null">
+        transfer_to_warehouse = #{transferToWarehouse,jdbcType=BIGINT},
+      </if>
+      <if test="callOutWarehouse != null">
+        call_out_warehouse = #{callOutWarehouse,jdbcType=BIGINT},
+      </if>
+      <if test="callOutDate != null">
+        call_out_date = #{callOutDate,jdbcType=DATE},
+      </if>
+      <if test="acceptanceDate != null">
+        acceptance_date = #{acceptanceDate,jdbcType=DATE},
+      </if>
+      <if test="goodsTransferState != null">
+        goods_transfer_state = #{goodsTransferState,jdbcType=CHAR},
+      </if>
+      <if test="productTransferRemarks != null">
+        product_transfer_remarks = #{productTransferRemarks,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where goods_transfer_info_id = #{goodsTransferInfoId,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="pers.wangshun.supermarketserver.model.GoodsTransferInfo">
+    update goods_transfer_info
+    set merchandiser = #{merchandiser,jdbcType=BIGINT},
+      commodity_inspector = #{commodityInspector,jdbcType=BIGINT},
+      transfer_to_warehouse = #{transferToWarehouse,jdbcType=BIGINT},
+      call_out_warehouse = #{callOutWarehouse,jdbcType=BIGINT},
+      call_out_date = #{callOutDate,jdbcType=DATE},
+      acceptance_date = #{acceptanceDate,jdbcType=DATE},
+      goods_transfer_state = #{goodsTransferState,jdbcType=CHAR},
+      product_transfer_remarks = #{productTransferRemarks,jdbcType=VARCHAR}
+    where goods_transfer_info_id = #{goodsTransferInfoId,jdbcType=BIGINT}
+  </update>
+</mapper>

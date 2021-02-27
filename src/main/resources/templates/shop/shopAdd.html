@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<!-- saved from url=(0052)http://getbootstrap.com/docs/4.0/examples/dashboard/ -->
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <!-- Bootstrap core CSS -->
+    <link th:href="@{../asserts/css/bootstrap.min.css}" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link th:href="@{../asserts/css/dashboard.css}" rel="stylesheet">
+    <style type="text/css">
+        @-webkit-keyframes chartjs-render-animation {
+            from {
+                opacity: 0.99
+            }
+            to {
+                opacity: 1
+            }
+        }
+
+        @keyframes chartjs-render-animation {
+            from {
+                opacity: 0.99
+            }
+            to {
+                opacity: 1
+            }
+        }
+
+        .chartjs-render-monitor {
+            -webkit-animation: chartjs-render-animation 0.001s;
+            animation: chartjs-render-animation 0.001s;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+    </style>
+</head>
+
+<body>
+<div th:replace="commons/bar::topbar"></div>
+<div class="container-fluid">
+    <div class="row">
+        <!--引入侧边栏-->
+        <div th:replace="commons/bar::sidebar(activeUri='shops')"></div>
+        <main role="main" class="col-md-9 ml-sm-auto col-lg-10 pt-3 px-4">
+            <th:block th:if="${shop ne null}">
+                <h2>Изменить супермаркет</h2>
+            </th:block>
+            <th:block th:if="${shop eq null}">
+                <h2>Добавить супермаркет</h2>
+            </th:block>
+            <form th:action="@{/shop}" method="post">
+                <input type="hidden" name="_method" value="put" th:if="${shop ne null}">
+                <div class="form-group hidden">
+                    <th:block th:if="${shop ne null}">
+                        <label for="shopId2">Идентификатор магазина</label>
+                        <input type="text" class="form-control" id="shopId2" name="shopId" th:value="${shop ne null}?${shop.shopId}">
+                    </th:block>
+                    <th:block th:if="${shop eq null}">
+                        <label for="shopId">Идентификатор магазина</label>
+                        <input type="text" class="form-control" id="shopId" name="shopId">
+                    </th:block>
+                </div>
+                <div class="form-group">
+                    <label for="shopSize">Размер магазина</label>
+                    <input type="text" class="form-control" id="shopSize" name="shopSize" th:value="${shop ne null}?${shop.shopSize}" required>
+                </div>
+                <div class="form-group">
+                    <label for="inputFourthLevel">Расположение магазина</label>
+                    <select id="inputFourthLevel" class="form-control" name="shopLocation">
+                        <option>Выбирать...</option>
+                        <option th:each="fourth : ${fourthLevel}" th:text="${fourth.fourthLevelName}"
+                                th:value="${fourth.fourthLevelName}" th:selected="${shop ne null}?${fourth.getFourthLevelName() eq shop.getShopLocation()}"></option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="monthlyRent">Месячная оплата</label>
+                    <div class="input-group">
+                        <input type="text" class="form-control" id="monthlyRent" name="monthlyRent" th:value="${shop ne null}?${shop.monthlyRent}">
+                        <div class="input-group-prepend">
+                            <div class="input-group-text">₽</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="shopDeposit">Магазинный депозит</label>
+                    <div class="input-group">
+                        <input type="text" class="form-control" id="shopDeposit" name="shopDeposit" th:value="${shop ne null}?${shop.shopDeposit}">
+                        <div class="input-group-prepend">
+                            <div class="input-group-text">₽</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="shopDescription">Описание магазина</label>
+                    <div class="input-group">
+                        <input type="text" class="form-control" id="shopDescription" name="shopDescription" th:value="${shop ne null}?${shop.shopDescription}">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <input type="submit" class="btn btn-primary" value="Представить" onclick="createShop()">
+                </div>
+            </form>
+        </main>
+    </div>
+</div>
+
+<!-- Bootstrap core JavaScript
+================================================== -->
+<!-- Placed at the end of the document so the pages load faster -->
+<script type="text/javascript" src="../../asserts/js/jquery-3.2.1.slim.min.js"></script>
+<script type="text/javascript" src="../asserts/js/popper.min.js"></script>
+<script type="text/javascript" src="../asserts/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="../asserts/js/bootstrap-datetimepicker.min.js"></script>
+<script type="text/javascript" src="../asserts/js/locales/bootstrap-datetimepicker.ru.js"></script>
+
+<!-- Icons -->
+<script type="text/javascript" src="../asserts/js/feather.min.js"></script>
+<script>
+    feather.replace()
+</script>
+
+<!-- Graphs -->
+<script type="text/javascript" src="../asserts/js/Chart.min.js"></script>
+
+<script>
+    function createShop() {
+        $('#shopId').val('2000' + new Date().getMilliseconds());
+    }
+</script>
+
+</body>
+
+</html>

@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<!-- saved from url=(0052)http://getbootstrap.com/docs/4.0/examples/dashboard/ -->
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <!-- Bootstrap core CSS -->
+    <link th:href="@{../asserts/css/bootstrap.min.css}" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link th:href="@{../asserts/css/dashboard.css}" rel="stylesheet">
+    <style type="text/css">
+        @-webkit-keyframes chartjs-render-animation {
+            from {
+                opacity: 0.99
+            }
+            to {
+                opacity: 1
+            }
+        }
+
+        @keyframes chartjs-render-animation {
+            from {
+                opacity: 0.99
+            }
+            to {
+                opacity: 1
+            }
+        }
+
+        .chartjs-render-monitor {
+            -webkit-animation: chartjs-render-animation 0.001s;
+            animation: chartjs-render-animation 0.001s;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+    </style>
+</head>
+
+<body>
+<div th:replace="commons/bar::topbar"></div>
+<div class="container-fluid">
+    <div class="row">
+        <!--引入侧边栏-->
+        <div th:replace="commons/bar::sidebar(activeUri='vipUsers')"></div>
+        <main role="main" class="col-md-9 ml-sm-auto col-lg-10 pt-3 px-4">
+            <th:block th:if="${vipUser ne null}">
+                <h2>Изменить</h2>
+            </th:block>
+            <th:block th:if="${vipUser eq null}">
+                <h2>Добавить</h2>
+            </th:block>
+            <form th:action="@{/vipUser}" method="post">
+                <input type="hidden" name="_method" value="put" th:if="${vipUser ne null}">
+                <div class="form-group hidden">
+                    <th:block th:if="${vipUser ne null}">
+                        <label for="id2"></label>
+                        <input type="text" class="form-control" id="id2" name="id" th:value="${vipUser ne null}?${vipUser.id}">
+                    </th:block>
+                    <th:block th:if="${vipUser eq null}">
+                        <label for="id"></label>
+                        <input type="text" class="form-control" id="id" name="id">
+                    </th:block>
+                </div>
+                <div class="form-group">
+                    <label for="username">Имя пользователя</label>
+                    <input type="text" class="form-control" id="username" name="username" th:value="${vipUser ne null}?${vipUser.username}" required>
+                </div>
+                <div class="form-group">
+                    <label for="password">Пароль</label>
+                    <input type="password" class="form-control" id="password" name="password" th:value="${vipUser ne null}?${vipUser.password}" required>
+                </div>
+                <fieldset class="form-group">
+                    <legend class="col-form-label pt-0">VIP Пол</legend>
+                    <div class="custom-control custom-radio custom-control-inline">
+                        <input type="radio" id="vipGender1" name="vipGender"
+                               class="custom-control-input" value="01"
+                               th:checked="${vipUser ne null}?${vipUser.vipGender} eq '01'">
+                        <label class="custom-control-label" for="vipGender1">Мужчина</label>
+                    </div>
+                    <div class="custom-control custom-radio custom-control-inline">
+                        <input type="radio" id="vipGender2" name="vipGender"
+                               class="custom-control-input" value="02"
+                               th:checked="${vipUser ne null}?${vipUser.vipGender} eq '02'">
+                        <label class="custom-control-label" for="vipGender2">Женщина</label>
+                    </div>
+                </fieldset>
+                <div class="form-group">
+                    <label for="vipNumber">Номер VIP</label>
+                    <input type="text" class="form-control" id="vipNumber" name="vipNumber" th:value="${vipUser ne null}?${vipUser.vipNumber}" required>
+                </div>
+                <div class="form-group">
+                    <label for="datetimepicker">VIP День Рождения</label>
+                    <div class="input-append date" id="datetimepicker" data-date="" data-date-format="dd/mm/yyyy">
+                        <input id="vipBirthday" class="form-control" type="text"
+                               th:value="${vipUser ne null}?${#dates.format(vipUser.vipBirthday,'dd/MM/yyyy')}"
+                               name="vipBirthday" required>
+                        <span class="add-on"><i class="icon-th"></i></span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="inputFourthLevel">VIP место</label>
+                    <select id="inputFourthLevel" class="form-control" name="vipPlace">
+                        <option>Выбирать...</option>
+                        <option th:each="fourth : ${fourthLevel}" th:text="${fourth.fourthLevelName}"
+                                th:value="${fourth.fourthLevelName}" th:selected="${vipUser ne null}?${fourth.getFourthLevelName() eq vipUser.vipPlace}"></option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="vipShopId">VIP магазин</label>
+                    <select id="vipShopId" class="form-control" name="vipShopId">
+                        <option>Выбирать...</option>
+                        <option th:each="shopInfo : ${shopInfos}" th:text="${shopInfo.shopId}"
+                                th:value="${shopInfo.shopId}" th:selected="${vipUser ne null}?${shopInfo.shopId eq vipUser.vipShopId}"></option>
+                    </select>
+                </div>
+                <div class="form-group hidden">
+                    <label for="vipCardCode"></label>
+                    <input type="text" class="form-control" id="vipCardCode" name="vipCardCode" th:value="${vipUser ne null}?${vipUser.vipCardCode}">
+                </div>
+                <div class="form-group hidden">
+                    <label for="vipIntegration"></label>
+                    <input type="text" class="form-control" id="vipIntegration" name="vipIntegration" th:value="${vipUser ne null}?${vipUser.vipIntegration}">
+                </div>
+                <div class="form-group hidden">
+                    <label for="datetimepicker2">Дата регистрации vip</label>
+                    <div class="input-append date" id="datetimepicker2" data-date="" data-date-format="dd/mm/yyyy">
+                        <input id="vipRegisterDate" class="form-control" type="text"
+                               th:value="${vipUser ne null}?${#dates.format(vipUser.vipRegisterDate,'dd/MM/yyyy')}"
+                               name="vipRegisterDate" required>
+                        <span class="add-on"><i class="icon-th"></i></span>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <input type="submit" class="btn btn-primary" value="Представить" onclick="createVipUser()">
+                </div>
+            </form>
+        </main>
+    </div>
+</div>
+
+<!-- Bootstrap core JavaScript
+================================================== -->
+<!-- Placed at the end of the document so the pages load faster -->
+<script type="text/javascript" src="../../asserts/js/jquery-3.2.1.slim.min.js"></script>
+<script type="text/javascript" src="../asserts/js/popper.min.js"></script>
+<script type="text/javascript" src="../asserts/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="../asserts/js/bootstrap-datetimepicker.min.js"></script>
+<script type="text/javascript" src="../asserts/js/locales/bootstrap-datetimepicker.ru.js"></script>
+
+<!-- Icons -->
+<script type="text/javascript" src="../asserts/js/feather.min.js"></script>
+<script>
+    feather.replace()
+</script>
+
+<!-- Graphs -->
+<script type="text/javascript" src="../asserts/js/Chart.min.js"></script>
+<script>
+    $('#datetimepicker').datetimepicker({
+        language:'ru',
+        minView: 'month',
+        autoclose: true,
+        setStartDate: new Date(),
+        todayBtn: true,
+        todayHighlight: true,
+        keyboardNavigation: true
+    }).on('changeDate', function (ev) {
+        $(this).datetimepicker('hide');
+    });
+
+    $('#datetimepicker2').datetimepicker({
+        language:'ru',
+        minView: 'month',
+        autoclose: true,
+        setStartDate: new Date(),
+        todayBtn: true,
+        todayHighlight: true,
+        keyboardNavigation: true
+    }).on('changeDate', function (ev) {
+        $(this).datetimepicker('hide');
+    });
+</script>
+<script>
+    function createVipUser() {
+        $('#vipCardCode').val('9' + new Date().getMilliseconds());
+        $('#vipIntegration').val('10');
+        $('#vipRegisterDate').val(new Date());
+    }
+</script>
+
+</body>
+
+</html>

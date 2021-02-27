@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="pers.wangshun.supermarketserver.mapper.InventoryCountingInfoMapper">
+  <resultMap id="BaseResultMap" type="pers.wangshun.supermarketserver.model.InventoryCountingInfo">
+    <id column="inventory_counting_info_number" jdbcType="BIGINT" property="inventoryCountingInfoNumber" />
+    <result column="inventory_user" jdbcType="BIGINT" property="inventoryUser" />
+    <result column="warehouse_id" jdbcType="BIGINT" property="warehouseId" />
+    <result column="inventory_date" jdbcType="DATE" property="inventoryDate" />
+    <result column="inventory_state" jdbcType="CHAR" property="inventoryState" />
+    <result column="inventory_remarks" jdbcType="VARCHAR" property="inventoryRemarks" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    inventory_counting_info_number, inventory_user, warehouse_id, inventory_date, inventory_state, 
+    inventory_remarks
+  </sql>
+  <select id="selectByExample" parameterType="pers.wangshun.supermarketserver.model.InventoryCountingInfoExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from inventory_counting_info
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from inventory_counting_info
+    where inventory_counting_info_number = #{inventoryCountingInfoNumber,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from inventory_counting_info
+    where inventory_counting_info_number = #{inventoryCountingInfoNumber,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="pers.wangshun.supermarketserver.model.InventoryCountingInfo">
+    insert into inventory_counting_info (inventory_counting_info_number, inventory_user, 
+      warehouse_id, inventory_date, inventory_state, 
+      inventory_remarks)
+    values (#{inventoryCountingInfoNumber,jdbcType=BIGINT}, #{inventoryUser,jdbcType=BIGINT}, 
+      #{warehouseId,jdbcType=BIGINT}, #{inventoryDate,jdbcType=DATE}, #{inventoryState,jdbcType=CHAR}, 
+      #{inventoryRemarks,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="pers.wangshun.supermarketserver.model.InventoryCountingInfo">
+    insert into inventory_counting_info
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="inventoryCountingInfoNumber != null">
+        inventory_counting_info_number,
+      </if>
+      <if test="inventoryUser != null">
+        inventory_user,
+      </if>
+      <if test="warehouseId != null">
+        warehouse_id,
+      </if>
+      <if test="inventoryDate != null">
+        inventory_date,
+      </if>
+      <if test="inventoryState != null">
+        inventory_state,
+      </if>
+      <if test="inventoryRemarks != null">
+        inventory_remarks,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="inventoryCountingInfoNumber != null">
+        #{inventoryCountingInfoNumber,jdbcType=BIGINT},
+      </if>
+      <if test="inventoryUser != null">
+        #{inventoryUser,jdbcType=BIGINT},
+      </if>
+      <if test="warehouseId != null">
+        #{warehouseId,jdbcType=BIGINT},
+      </if>
+      <if test="inventoryDate != null">
+        #{inventoryDate,jdbcType=DATE},
+      </if>
+      <if test="inventoryState != null">
+        #{inventoryState,jdbcType=CHAR},
+      </if>
+      <if test="inventoryRemarks != null">
+        #{inventoryRemarks,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="pers.wangshun.supermarketserver.model.InventoryCountingInfo">
+    update inventory_counting_info
+    <set>
+      <if test="inventoryUser != null">
+        inventory_user = #{inventoryUser,jdbcType=BIGINT},
+      </if>
+      <if test="warehouseId != null">
+        warehouse_id = #{warehouseId,jdbcType=BIGINT},
+      </if>
+      <if test="inventoryDate != null">
+        inventory_date = #{inventoryDate,jdbcType=DATE},
+      </if>
+      <if test="inventoryState != null">
+        inventory_state = #{inventoryState,jdbcType=CHAR},
+      </if>
+      <if test="inventoryRemarks != null">
+        inventory_remarks = #{inventoryRemarks,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where inventory_counting_info_number = #{inventoryCountingInfoNumber,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="pers.wangshun.supermarketserver.model.InventoryCountingInfo">
+    update inventory_counting_info
+    set inventory_user = #{inventoryUser,jdbcType=BIGINT},
+      warehouse_id = #{warehouseId,jdbcType=BIGINT},
+      inventory_date = #{inventoryDate,jdbcType=DATE},
+      inventory_state = #{inventoryState,jdbcType=CHAR},
+      inventory_remarks = #{inventoryRemarks,jdbcType=VARCHAR}
+    where inventory_counting_info_number = #{inventoryCountingInfoNumber,jdbcType=BIGINT}
+  </update>
+</mapper>

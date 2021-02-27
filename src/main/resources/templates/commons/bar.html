@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>bar</title>
+</head>
+<body>
+<nav class="navbar sticky-top flex-md-nowrap p-0" th:fragment="topbar" style="height:60px;box-shadow:0 0.5rem 1rem rgba(0,0,0,.05), inset 0 -1px 0 rgba(0,0,0,.1);">
+    <h2 class="navbar-white bg-white col-sm-3 col-md-1 mr-0">Супермаркет</h2>
+    <div class="btn-group px-3">
+        <button type="button" class="btn dropdown-toggle btn-outline-primary" data-toggle="dropdown"
+                data-display="static" aria-haspopup="true" aria-expanded="false"
+                th:text="${#session.getAttribute('EMPLOYEE_USER').username}">
+        </button>
+        <div class="dropdown-menu dropdown-menu-right">
+<!--            <a class="dropdown-item" href="#one">one</a>-->
+            <div role="separator" class="dropdown-divider"></div>
+            <a class="dropdown-item" th:href="@{/logout}">Выйти</a>
+        </div>
+    </div>
+</nav>
+
+<th:block th:if="${#session.getAttribute('EMPLOYEE_USER').roles[0].name eq 'ROLE_STAFF_MANAGER'}" th:fragment="sidebar">
+    <nav class="col-md-2 d-none d-md-block bg-white sidebar">
+        <div class="sidebar-sticky">
+            <ul class="nav flex-column">
+                <li class="nav-item">
+                    <a class="nav-link active"
+                       href="#" th:href="@{/main.html}"
+                       th:class="${activeUri == 'main.html' ? 'nav-link active' : 'nav-link'}">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                             stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                             class="feather feather-home">
+                            <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                            <polyline points="9 22 9 12 15 12 15 22"></polyline>
+                        </svg>
+                        Добро пожаловать <span class="sr-only">(current)</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link"
+                       th:href="@{/employees}"
+                       th:class="${activeUri == 'employees' ? 'nav-link active' : 'nav-link'}">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                             stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                             class="feather feather-users">
+                            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                            <circle cx="9" cy="7" r="4"></circle>
+                            <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                            <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                        </svg>
+                        Сотрудники
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+</th:block>
+<th:block th:if="${#session.getAttribute('EMPLOYEE_USER').roles[0].name eq 'ROLE_STORE_MANAGER'}" th:fragment="sidebar">
+    <nav class="col-md-2 d-none d-md-block bg-white sidebar">
+        <div class="sidebar-sticky">
+            <ul class="nav flex-column">
+                <li class="nav-item">
+                    <a class="nav-link active"
+                       href="#" th:href="@{/main.html}"
+                       th:class="${activeUri == 'main.html' ? 'nav-link active' : 'nav-link'}">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                             stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                             class="feather feather-home">
+                            <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                            <polyline points="9 22 9 12 15 12 15 22"></polyline>
+                        </svg>
+                        Добро пожаловать <span class="sr-only">(current)</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#"
+                       th:href="@{/shops}"
+                       th:class="${activeUri == 'shops' ? 'nav-link active' : 'nav-link'}">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                             stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                             class="feather feather-shopping-cart">
+                            <circle cx="9" cy="21" r="1"></circle>
+                            <circle cx="20" cy="21" r="1"></circle>
+                            <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+                        </svg>
+                        Магазин
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+</th:block>
+
+<th:block th:if="${#session.getAttribute('EMPLOYEE_USER').roles[0].name eq 'ROLE_SUPPLIER_MANAGER'}"
+          th:fragment="sidebar">
+    <nav class="col-md-2 d-none d-md-block bg-white sidebar">
+        <div class="sidebar-sticky">
+            <ul class="nav flex-column">
+                <li class="nav-item">
+                    <a class="nav-link active"
+                       href="#" th:href="@{/main.html}"
+                       th:class="${activeUri == 'main.html' ? 'nav-link active' : 'nav-link'}">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                             stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                             class="feather feather-home">
+                            <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                            <polyline points="9 22 9 12 15 12 15 22"></polyline>
+                        </svg>
+                        Добро пожаловать <span class="sr-only">(current)</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#"
+                       th:href="@{/suppliers}"
+                       th:class="${activeUri == 'suppliers' ? 'nav-link active' : 'nav-link'}">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                             stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                             class="feather feather-shopping-cart">
+                            <circle cx="9" cy="21" r="1"></circle>
+                            <circle cx="20" cy="21" r="1"></circle>
+                            <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+                        </svg>
+                        Поставщики
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+</th:block>
+
+<th:block th:if="${#session.getAttribute('EMPLOYEE_USER').roles[0].name eq 'ROLE_PRODUCT_DATA_MANAGER'}"
+          th:fragment="sidebar">
+    <nav class="col-md-2 d-none d-md-block bg-white sidebar">
+        <div class="sidebar-sticky">
+            <ul class="nav flex-column">
+                <li class="nav-item">
+                    <a class="nav-link active"
+                       href="#" th:href="@{/main.html}"
+                       th:class="${activeUri == 'main.html' ? 'nav-link active' : 'nav-link'}">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                             stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                             class="feather feather-home">
+                            <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                            <polyline points="9 22 9 12 15 12 15 22"></polyline>
+                        </svg>
+                        Добро пожаловать <span class="sr-only">(current)</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#"
+                       th:href="@{/goodsInfos}"
+                       th:class="${activeUri == 'goodsInfos' ? 'nav-link active' : 'nav-link'}">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                             stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                             class="feather feather-shopping-cart">
+                            <circle cx="9" cy="21" r="1"></circle>
+                            <circle cx="20" cy="21" r="1"></circle>
+                            <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+                        </svg>
+                        Информация о товарах
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#"
+                       th:href="@{/goodsCategories}"
+                       th:class="${activeUri == 'goodsCategories' ? 'nav-link active' : 'nav-link'}">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                             stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                             class="feather feather-shopping-cart">
+                            <circle cx="9" cy="21" r="1"></circle>
+                            <circle cx="20" cy="21" r="1"></circle>
+                            <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+                        </svg>
+                        Категории товаров
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#"
+                       th:href="@{/goodsDiscountInfos}"
+                       th:class="${activeUri == 'goodsDiscountInfos' ? 'nav-link active' : 'nav-link'}">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                             stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                             class="feather feather-shopping-cart">
+                            <circle cx="9" cy="21" r="1"></circle>
+                            <circle cx="20" cy="21" r="1"></circle>
+                            <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+                        </svg>
+                        Информация о скидках на товары
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+</th:block>
+<th:block th:if="${#session.getAttribute('EMPLOYEE_USER').roles[0].name eq 'ROLE_WAREHOUSE_MANAGER'}"
+          th:fragment="sidebar">
+    <nav class="col-md-2 d-none d-md-block bg-white sidebar">
+        <div class="sidebar-sticky">
+            <ul class="nav flex-column">
+                <li class="nav-item">
+                    <a class="nav-link active"
+                       href="#" th:href="@{/main.html}"
+                       th:class="${activeUri == 'main.html' ? 'nav-link active' : 'nav-link'}">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                             stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                             class="feather feather-home">
+                            <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                            <polyline points="9 22 9 12 15 12 15 22"></polyline>
+                        </svg>
+                        Добро пожаловать <span class="sr-only">(current)</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#"
+                       th:href="@{/warehouses}"
+                       th:class="${activeUri == 'warehouses' ? 'nav-link active' : 'nav-link'}">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                             stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                             class="feather feather-shopping-cart">
+                            <circle cx="9" cy="21" r="1"></circle>
+                            <circle cx="20" cy="21" r="1"></circle>
+                            <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+                        </svg>
+                        Склад
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+</th:block>
+
+
+<th:block th:if="${#session.getAttribute('EMPLOYEE_USER').roles[0].name eq 'ROLE_PURCHASER'}" th:fragment="sidebar">
+    <nav class="col-md-2 d-none d-md-block bg-white sidebar">
+        <div class="sidebar-sticky">
+            <ul class="nav flex-column">
+                <li class="nav-item">
+                    <a class="nav-link active"
+                       href="#" th:href="@{/main.html}"
+                       th:class="${activeUri == 'main.html' ? 'nav-link active' : 'nav-link'}">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                             stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                             class="feather feather-home">
+                            <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                            <polyline points="9 22 9 12 15 12 15 22"></polyline>
+                        </svg>
+                        Добро пожаловать <span class="sr-only">(current)</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#"
+                       th:href="@{/purchaseOrderInfos}"
+                       th:class="${activeUri == 'purchaseOrderInfos' ? 'nav-link active' : 'nav-link'}">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                             stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                             class="feather feather-shopping-cart">
+                            <circle cx="9" cy="21" r="1"></circle>
+                            <circle cx="20" cy="21" r="1"></circle>
+                            <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+                        </svg>
+                        Заполните управление заказами на покупку
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+</th:block>
+
+<th:block th:if="${#session.getAttribute('EMPLOYEE_USER').roles[0].name eq 'ROLE_ORDERER'}" th:fragment="sidebar">
+    <nav class="col-md-2 d-none d-md-block bg-white sidebar">
+        <div class="sidebar-sticky">
+            <ul class="nav flex-column">
+                <li class="nav-item">
+                    <a class="nav-link active"
+                       href="#" th:href="@{/main.html}"
+                       th:class="${activeUri == 'main.html' ? 'nav-link active' : 'nav-link'}">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                             stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                             class="feather feather-home">
+                            <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                            <polyline points="9 22 9 12 15 12 15 22"></polyline>
+                        </svg>
+                        Добро пожаловать <span class="sr-only">(current)</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#"
+                       th:href="@{/purchaseOrderReviews}"
+                       th:class="${activeUri == 'purchaseOrderReviews' ? 'nav-link active' : 'nav-link'}">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                             stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                             class="feather feather-shopping-cart">
+                            <circle cx="9" cy="21" r="1"></circle>
+                            <circle cx="20" cy="21" r="1"></circle>
+                            <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+                        </svg>
+                        Просмотр заказа на покупку
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+</th:block>
+<th:block th:if="${#session.getAttribute('EMPLOYEE_USER').roles[0].name eq 'ROLE_ACCEPTOR'}" th:fragment="sidebar">
+    <nav class="col-md-2 d-none d-md-block bg-white sidebar">
+        <div class="sidebar-sticky">
+            <ul class="nav flex-column">
+                <li class="nav-item">
+                    <a class="nav-link active"
+                       href="#" th:href="@{/main.html}"
+                       th:class="${activeUri == 'main.html' ? 'nav-link active' : 'nav-link'}">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                             stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                             class="feather feather-home">
+                            <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                            <polyline points="9 22 9 12 15 12 15 22"></polyline>
+                        </svg>
+                        Добро пожаловать <span class="sr-only">(current)</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#"
+                       th:href="@{/purchaseOrderChecks}"
+                       th:class="${activeUri == 'purchaseOrderChecks' ? 'nav-link active' : 'nav-link'}">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                             stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                             class="feather feather-shopping-cart">
+                            <circle cx="9" cy="21" r="1"></circle>
+                            <circle cx="20" cy="21" r="1"></circle>
+                            <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+                        </svg>
+                        Управление приемкой
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+</th:block>
+<th:block th:if="${#session.getAttribute('EMPLOYEE_USER').roles[0].name eq 'ROLE_INVENTORY_MANAGER'}" th:fragment="sidebar">
+    <nav class="col-md-2 d-none d-md-block bg-white sidebar">
+        <div class="sidebar-sticky">
+            <ul class="nav flex-column">
+                <li class="nav-item">
+                    <a class="nav-link active"
+                       href="#" th:href="@{/main.html}"
+                       th:class="${activeUri == 'main.html' ? 'nav-link active' : 'nav-link'}">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                             stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                             class="feather feather-home">
+                            <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                            <polyline points="9 22 9 12 15 12 15 22"></polyline>
+                        </svg>
+                        Добро пожаловать <span class="sr-only">(current)</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#"
+                       th:href="@{/inventories}"
+                       th:class="${activeUri == 'inventories' ? 'nav-link active' : 'nav-link'}">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                             stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                             class="feather feather-shopping-cart">
+                            <circle cx="9" cy="21" r="1"></circle>
+                            <circle cx="20" cy="21" r="1"></circle>
+                            <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+                        </svg>
+                        Товар на складе
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+</th:block>
+
+<th:block th:if="${#session.getAttribute('EMPLOYEE_USER').roles[0].name eq 'ROLE_STORE_GENERAL_MANAGER'}" th:fragment="sidebar">
+    <nav class="col-md-2 d-none d-md-block bg-white sidebar">
+        <div class="sidebar-sticky">
+            <ul class="nav flex-column">
+                <li class="nav-item">
+                    <a class="nav-link active"
+                       href="#" th:href="@{/main.html}"
+                       th:class="${activeUri == 'main.html' ? 'nav-link active' : 'nav-link'}">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                             stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                             class="feather feather-home">
+                            <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                            <polyline points="9 22 9 12 15 12 15 22"></polyline>
+                        </svg>
+                        Добро пожаловать <span class="sr-only">(current)</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#"
+                       th:href="@{/expensesRecords}"
+                       th:class="${activeUri == 'expensesRecords' ? 'nav-link active' : 'nav-link'}">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                             stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                             class="feather feather-shopping-cart">
+                            <circle cx="9" cy="21" r="1"></circle>
+                            <circle cx="20" cy="21" r="1"></circle>
+                            <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+                        </svg>
+                        Учет расходов
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+</th:block>
+
+<th:block th:if="${#session.getAttribute('EMPLOYEE_USER').roles[0].name eq 'ROLE_VIP_MANAGER'}" th:fragment="sidebar">
+    <nav class="col-md-2 d-none d-md-block bg-white sidebar">
+        <div class="sidebar-sticky">
+            <ul class="nav flex-column">
+                <li class="nav-item">
+                    <a class="nav-link active"
+                       href="#" th:href="@{/main.html}"
+                       th:class="${activeUri == 'main.html' ? 'nav-link active' : 'nav-link'}">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                             stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                             class="feather feather-home">
+                            <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                            <polyline points="9 22 9 12 15 12 15 22"></polyline>
+                        </svg>
+                        Добро пожаловать <span class="sr-only">(current)</span>
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#"
+                       th:href="@{/vipUsers}"
+                       th:class="${activeUri == 'vipUsers' ? 'nav-link active' : 'nav-link'}">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                             stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                             class="feather feather-shopping-cart">
+                            <circle cx="9" cy="21" r="1"></circle>
+                            <circle cx="20" cy="21" r="1"></circle>
+                            <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+                        </svg>
+                        Учет расходов
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+</th:block>
+
+
+</body>
+</html>

@@ -1,0 +1,245 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="pers.wangshun.supermarketserver.mapper.VipUserMapper">
+  <resultMap id="BaseResultMap" type="pers.wangshun.supermarketserver.model.VipUser">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="username" jdbcType="VARCHAR" property="username" />
+    <result column="password" jdbcType="VARCHAR" property="password" />
+    <result column="vip_gender" jdbcType="CHAR" property="vipGender" />
+    <result column="vip_number" jdbcType="VARCHAR" property="vipNumber" />
+    <result column="vip_birthday" jdbcType="DATE" property="vipBirthday" />
+    <result column="vip_place" jdbcType="VARCHAR" property="vipPlace" />
+    <result column="vip_shop_id" jdbcType="INTEGER" property="vipShopId" />
+    <result column="vip_card_code" jdbcType="VARCHAR" property="vipCardCode" />
+    <result column="vip_integration" jdbcType="INTEGER" property="vipIntegration" />
+    <result column="vip_register_date" jdbcType="DATE" property="vipRegisterDate" />
+    <result column="enabled" jdbcType="BIT" property="enabled" />
+    <result column="locked" jdbcType="BIT" property="locked" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    id, username, password, vip_gender, vip_number, vip_birthday, vip_place, vip_shop_id, 
+    vip_card_code, vip_integration, vip_register_date, enabled, locked
+  </sql>
+  <select id="selectByExample" parameterType="pers.wangshun.supermarketserver.model.VipUserExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from management_sys.vip_user
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from management_sys.vip_user
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <select id="selectByVipUser" resultType="pers.wangshun.supermarketserver.model.VipUser" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from management_sys.vip_user
+    where vip_card_code=#{vipCardCode,jdbcType=VARCHAR}
+      and username=#{username,jdbcType=VARCHAR}
+      and password=#{password,jdbcType=VARCHAR}
+  </select>
+  <select id="selectByVipCardCode" resultType="pers.wangshun.supermarketserver.model.VipUser" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from management_sys.vip_user
+    where vip_card_code=#{vipCardCode,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from management_sys.vip_user
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="pers.wangshun.supermarketserver.model.VipUser">
+    insert into management_sys.vip_user (id, username, password,
+      vip_gender, vip_number, vip_birthday, 
+      vip_place, vip_shop_id, vip_card_code, 
+      vip_integration, vip_register_date, enabled, 
+      locked)
+    values (#{id,jdbcType=INTEGER}, #{username,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, 
+      #{vipGender,jdbcType=CHAR}, #{vipNumber,jdbcType=VARCHAR}, #{vipBirthday,jdbcType=DATE}, 
+      #{vipPlace,jdbcType=VARCHAR}, #{vipShopId,jdbcType=INTEGER}, #{vipCardCode,jdbcType=VARCHAR}, 
+      #{vipIntegration,jdbcType=INTEGER}, #{vipRegisterDate,jdbcType=DATE}, #{enabled,jdbcType=BIT}, 
+      #{locked,jdbcType=BIT})
+  </insert>
+  <insert id="insertSelective" parameterType="pers.wangshun.supermarketserver.model.VipUser">
+    insert into management_sys.vip_user
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="username != null">
+        username,
+      </if>
+      <if test="password != null">
+        password,
+      </if>
+      <if test="vipGender != null">
+        vip_gender,
+      </if>
+      <if test="vipNumber != null">
+        vip_number,
+      </if>
+      <if test="vipBirthday != null">
+        vip_birthday,
+      </if>
+      <if test="vipPlace != null">
+        vip_place,
+      </if>
+      <if test="vipShopId != null">
+        vip_shop_id,
+      </if>
+      <if test="vipCardCode != null">
+        vip_card_code,
+      </if>
+      <if test="vipIntegration != null">
+        vip_integration,
+      </if>
+      <if test="vipRegisterDate != null">
+        vip_register_date,
+      </if>
+      <if test="enabled != null">
+        enabled,
+      </if>
+      <if test="locked != null">
+        locked,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="username != null">
+        #{username,jdbcType=VARCHAR},
+      </if>
+      <if test="password != null">
+        #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="vipGender != null">
+        #{vipGender,jdbcType=CHAR},
+      </if>
+      <if test="vipNumber != null">
+        #{vipNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="vipBirthday != null">
+        #{vipBirthday,jdbcType=DATE},
+      </if>
+      <if test="vipPlace != null">
+        #{vipPlace,jdbcType=VARCHAR},
+      </if>
+      <if test="vipShopId != null">
+        #{vipShopId,jdbcType=INTEGER},
+      </if>
+      <if test="vipCardCode != null">
+        #{vipCardCode,jdbcType=VARCHAR},
+      </if>
+      <if test="vipIntegration != null">
+        #{vipIntegration,jdbcType=INTEGER},
+      </if>
+      <if test="vipRegisterDate != null">
+        #{vipRegisterDate,jdbcType=DATE},
+      </if>
+      <if test="enabled != null">
+        #{enabled,jdbcType=BIT},
+      </if>
+      <if test="locked != null">
+        #{locked,jdbcType=BIT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="pers.wangshun.supermarketserver.model.VipUser">
+    update management_sys.vip_user
+    <set>
+      <if test="username != null">
+        username = #{username,jdbcType=VARCHAR},
+      </if>
+      <if test="password != null">
+        password = #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="vipGender != null">
+        vip_gender = #{vipGender,jdbcType=CHAR},
+      </if>
+      <if test="vipNumber != null">
+        vip_number = #{vipNumber,jdbcType=VARCHAR},
+      </if>
+      <if test="vipBirthday != null">
+        vip_birthday = #{vipBirthday,jdbcType=DATE},
+      </if>
+      <if test="vipPlace != null">
+        vip_place = #{vipPlace,jdbcType=VARCHAR},
+      </if>
+      <if test="vipShopId != null">
+        vip_shop_id = #{vipShopId,jdbcType=INTEGER},
+      </if>
+      <if test="vipCardCode != null">
+        vip_card_code = #{vipCardCode,jdbcType=VARCHAR},
+      </if>
+      <if test="vipIntegration != null">
+        vip_integration = #{vipIntegration,jdbcType=INTEGER},
+      </if>
+      <if test="vipRegisterDate != null">
+        vip_register_date = #{vipRegisterDate,jdbcType=DATE},
+      </if>
+      <if test="enabled != null">
+        enabled = #{enabled,jdbcType=BIT},
+      </if>
+      <if test="locked != null">
+        locked = #{locked,jdbcType=BIT},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="pers.wangshun.supermarketserver.model.VipUser">
+    update management_sys.vip_user
+    set username = #{username,jdbcType=VARCHAR},
+      password = #{password,jdbcType=VARCHAR},
+      vip_gender = #{vipGender,jdbcType=CHAR},
+      vip_number = #{vipNumber,jdbcType=VARCHAR},
+      vip_birthday = #{vipBirthday,jdbcType=DATE},
+      vip_place = #{vipPlace,jdbcType=VARCHAR},
+      vip_shop_id = #{vipShopId,jdbcType=INTEGER},
+      vip_card_code = #{vipCardCode,jdbcType=VARCHAR},
+      vip_integration = #{vipIntegration,jdbcType=INTEGER},
+      vip_register_date = #{vipRegisterDate,jdbcType=DATE},
+      enabled = #{enabled,jdbcType=BIT},
+      locked = #{locked,jdbcType=BIT}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

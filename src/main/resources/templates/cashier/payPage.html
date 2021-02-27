@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<!-- saved from url=(0052)http://getbootstrap.com/docs/4.0/examples/dashboard/ -->
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <title>Интерфейс оплаты</title>
+    <!-- Bootstrap core CSS -->
+    <link th:href="@{../asserts/css/bootstrap.min.css}" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link th:href="@{../asserts/css/dashboard.css}" rel="stylesheet">
+    <style type="text/css">
+        @-webkit-keyframes chartjs-render-animation {
+            from {
+                opacity: 0.99
+            }
+            to {
+                opacity: 1
+            }
+        }
+
+        @keyframes chartjs-render-animation {
+            from {
+                opacity: 0.99
+            }
+            to {
+                opacity: 1
+            }
+        }
+
+        .chartjs-render-monitor {
+            -webkit-animation: chartjs-render-animation 0.001s;
+            animation: chartjs-render-animation 0.001s;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+    </style>
+</head>
+
+<body>
+<nav class="navbar sticky-top flex-md-nowrap p-0" th:fragment="topbar"
+     style="height:60px;box-shadow:0 0.5rem 1rem rgba(0,0,0,.05), inset 0 -1px 0 rgba(0,0,0,.1);">
+    <h2 class="navbar-white bg-white col-sm-3 col-md-1 mr-0">Супермаркет</h2>
+    <div class="btn-group px-3">
+        <button type="button" class="btn dropdown-toggle btn-outline-primary" data-toggle="dropdown"
+                data-display="static" aria-haspopup="true" aria-expanded="false"
+                th:text="${#session.getAttribute('CASHIER').username}">
+        </button>
+        <div class="dropdown-menu dropdown-menu-right">
+            <div role="separator" class="dropdown-divider"></div>
+            <a class="dropdown-item" th:href="@{/cashLogout}">Выйти</a>
+        </div>
+    </div>
+</nav>
+<div class="container-fluid">
+    <div class="row">
+        <main role="main" class="ml-sm-auto col-lg-12 pt-3 px-5">
+            <h2>Интерфейс оплаты</h2>
+            <label hidden="hidden">
+                <input type="text" id="employeeCode" name="employeeCode" th:value="${#session.getAttribute('CASHIER').employeeCode}">
+            </label>
+            <label hidden>
+                <input type="text" id="password" name="password" th:value="${#session.getAttribute('CASHIER').password}">
+            </label>
+            <form>
+                <div class="form-row">
+<!--                    <div class="col">-->
+<!--                        <label for="invoiceNumber">Номер счета</label>-->
+<!--                        <input type="text" class="form-control purchaseOrderNumber" id="invoiceNumber"-->
+<!--                               name="invoiceNumber"-->
+<!--                               th:value="${invoiceNumber}">-->
+<!--                    </div>-->
+                    <div class="col">
+                        <label for="shopId">Идентификатор магазина</label>
+                        <input type="text" class="form-control purchaseOrderNumber" id="shopId"
+                               name="shopId"
+                               th:value="${#session.getAttribute('CASHIER').employeeShopId}">
+                    </div>
+<!--                    <div class="col">-->
+<!--                        <label for="totalPrice">Срок хранения</label>-->
+<!--                        <input type="text" id="totalPrice" class="form-control" name="totalPrice">-->
+<!--                    </div>-->
+                </div>
+                <br>
+                <div class="form-group">
+                    <button type="button" class="btn btn-primary mb-2 float-right" onclick="addRow()">+
+                    </button>
+                </div>
+                <div class="form-group">
+                    <table class="table">
+                        <thead>
+                        <tr>
+                            <th scope="col">Товарный штрих-код</th>
+                            <th scope="col">Цена товара</th>
+                            <th scope="col">Количество товара</th>
+                            <th scope="col">Итоговая цена</th>
+                        </tr>
+                        </thead>
+                        <tbody id="expensesRecordsForm">
+                        </tbody>
+                    </table>
+                </div>
+                <div class="form-group">
+                    <input type="submit" class="btn btn-primary" value="Представить" id="write-btn" onclick="update()">
+<!--                    <button type="button" class="btn btn-primary" value="Представить" onclick="update()">-->
+                </div>
+            </form>
+        </main>
+    </div>
+</div>
+<!-- Bootstrap core JavaScript
+================================================== -->
+<!-- Placed at the end of the document so the pages load faster -->
+<script type="text/javascript" src="../../asserts/js/jquery-3.2.1.slim.min.js"></script>
+<script type="text/javascript" src="https://cdn.bootcss.com/jquery/3.2.1/jquery.js"></script>
+<script type="text/javascript" src="../asserts/js/popper.min.js"></script>
+<script type="text/javascript" src="../asserts/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="../asserts/js/bootstrap-datetimepicker.min.js"></script>
+<script type="text/javascript" src="../asserts/js/locales/bootstrap-datetimepicker.ru.js"></script>
+
+<!-- Icons -->
+<script type="text/javascript" src="../asserts/js/feather.min.js"></script>
+<script>
+    feather.replace()
+</script>
+
+<!-- Graphs -->
+<script type="text/javascript" src="../asserts/js/Chart.min.js"></script>
+
+
+<script>
+    function addRow() {
+        var html = "<tr>\n" +
+            "                            <td>\n" +
+            "                                <label>\n" +
+            "                                    <input type=\"text\" class=\"form-control goodsBarCode\" name=\"goodsBarCode\">\n" +
+            "                                </label>\n" +
+            "                            </td>\n" +
+            "                            <td>\n" +
+            "                                <label>\n" +
+            "                                    <input type=\"text\" class=\"form-control goodsPrice\" name=\"goodsPrice\">\n" +
+            "                                </label>\n" +
+            "                            </td>\n" +
+            "                            <td>\n" +
+            "                                <label>\n" +
+            "                                    <input type=\"text\" class=\"form-control goodsQuantity\" name=\"goodsQuantity\">\n" +
+            "                                </label>\n" +
+            "                            </td>\n" +
+            "                            <td>\n" +
+            "                                <label>\n" +
+            "                                    <input type=\"text\" class=\"form-control totalPrice\" name=\"totalPrice\">\n" +
+            "                                </label>\n" +
+            "                            </td>\n" +
+            "                        </tr>";
+        $('.table').append(html);
+    }
+
+</script>
+<script>
+
+
+    function update() {
+        // var invoiceNumber = $('#invoiceNumber').val();
+        var shopId = $('#shopId').val();
+        var employeeCode = $('#employeeCode').val();
+        var password = $('#password').val();
+
+
+        var expensesRecords = [];
+        $('#expensesRecordsForm tr').each(function (i, n) {
+            expensesRecords.push({
+                invoiceNumber: '900'+new Date().getMilliseconds(),
+                shopId:shopId,
+                goodsBarCode: $(this).find('.goodsBarCode').val(),
+                goodsPrice: $(this).find('.goodsPrice').val(),
+                goodsQuantity: $(this).find('.goodsQuantity').val(),
+                totalPrice: $(this).find('.totalPrice').val()
+            });
+        });
+
+        var expensesRecord = {
+            "employeeCode":employeeCode,
+            "password":password,
+            "expensesRecords": expensesRecords
+        };
+        // console.log(expensesRecord);
+        $.ajax({
+            type: 'POST',
+            url: 'cash',
+            dataType: "json",
+            data: JSON.stringify(expensesRecord),
+            contentType: "application/json;charset=utf-8",
+            success: function (data) {
+            }
+        })
+
+    }
+</script>
+
+</body>
+
+</html>

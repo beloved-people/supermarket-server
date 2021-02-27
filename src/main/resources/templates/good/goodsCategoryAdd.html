@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<!-- saved from url=(0052)http://getbootstrap.com/docs/4.0/examples/dashboard/ -->
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <!-- Bootstrap core CSS -->
+    <link th:href="@{../asserts/css/bootstrap.min.css}" rel="stylesheet">
+
+    <!-- Custom styles for this template -->
+    <link th:href="@{../asserts/css/dashboard.css}" rel="stylesheet">
+    <style type="text/css">
+        @-webkit-keyframes chartjs-render-animation {
+            from {
+                opacity: 0.99
+            }
+            to {
+                opacity: 1
+            }
+        }
+
+        @keyframes chartjs-render-animation {
+            from {
+                opacity: 0.99
+            }
+            to {
+                opacity: 1
+            }
+        }
+
+        .chartjs-render-monitor {
+            -webkit-animation: chartjs-render-animation 0.001s;
+            animation: chartjs-render-animation 0.001s;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+    </style>
+</head>
+
+<body>
+<div th:replace="commons/bar::topbar"></div>
+<div class="container-fluid">
+    <div class="row">
+        <!--引入侧边栏-->
+        <div th:replace="commons/bar::sidebar(activeUri='goodsCategories')"></div>
+        <main role="main" class="col-md-9 ml-sm-auto col-lg-10 pt-3 px-4">
+            <th:block th:if="${goodsCategory ne null}">
+                <h2>Изменить</h2>
+            </th:block>
+            <th:block th:if="${goodsCategory eq null}">
+                <h2>Добавить</h2>
+            </th:block>
+            <form th:action="@{/goodsCategory}" method="post">
+                <input type="hidden" name="_method" value="put" th:if="${goodsCategory ne null}">
+                <div class="form-group hidden">
+                    <th:block th:if="${goodsCategory ne null}">
+                        <label for="categoryNumber2">Номер категории</label>
+                        <input type="text" class="form-control" id="categoryNumber2" name="categoryNumber" th:value="${goodsCategory ne null}?${goodsCategory.categoryNumber}">
+                    </th:block>
+                    <th:block th:if="${goodsCategory eq null}">
+                        <label for="categoryNumber">Номер категории</label>
+                        <input type="text" id="categoryNumber" class="form-control" name="categoryNumber">
+                    </th:block>
+                </div>
+                <div class="form-group hidden">
+                    <label for="parentIndex">Родительский индекс</label>
+                    <input type="text" class="form-control" id="parentIndex" name="parentIndex" th:value="${goodsCategory ne null}?${goodsCategory.parentIndex}">
+                </div>
+                <div class="form-group">
+                    <label for="categoryName">Название категории</label>
+                    <input type="text" class="form-control" id="categoryName" name="categoryName" th:value="${goodsCategory ne null}?${goodsCategory.categoryName}" required>
+                </div>
+                <div class="form-group">
+                    <label for="categoryDescription">Описание категории</label>
+                    <input type="text" class="form-control" id="categoryDescription" name="categoryDescription" th:value="${goodsCategory ne null}?${goodsCategory.categoryDescription}" required>
+                </div>
+                <div class="modal-group">
+                    <input type="submit" class="btn btn-primary" value="Разместить">
+                </div>
+            </form>
+        </main>
+    </div>
+</div>
+
+<!-- Bootstrap core JavaScript
+================================================== -->
+<!-- Placed at the end of the document so the pages load faster -->
+<script type="text/javascript" src="../../asserts/js/jquery-3.2.1.slim.min.js"></script>
+<script type="text/javascript" src="../asserts/js/popper.min.js"></script>
+<script type="text/javascript" src="../asserts/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="../asserts/js/bootstrap-datetimepicker.min.js"></script>
+<script type="text/javascript" src="../asserts/js/locales/bootstrap-datetimepicker.ru.js"></script>
+
+<!-- Icons -->
+<script type="text/javascript" src="../asserts/js/feather.min.js"></script>
+<script>
+    feather.replace()
+</script>
+
+<!-- Graphs -->
+<script type="text/javascript" src="../asserts/js/Chart.min.js"></script>
+
+<script>
+    function createSupplier() {
+        $('#supplierId').val('3000'+new Date().getMilliseconds());
+    }
+</script>
+
+</body>
+
+</html>

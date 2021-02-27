@@ -1,0 +1,279 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE generatorConfiguration
+        PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN"
+        "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
+
+<generatorConfiguration>
+    <properties resource="application.properties" />
+    <classPathEntry location="D:\idea\.m2\repository\mysql\mysql-connector-java\8.0.19\mysql-connector-java-8.0.19.jar" />
+    <context id="Tables" targetRuntime="MyBatis3">
+        <!-- 注释 -->
+        <commentGenerator>
+            <!-- 是否生成注释代时间戳 -->
+            <property name="suppressDate" value="true"/>
+            <!-- 是否去除自动生成的注释 true：是 ： false:否 -->
+            <property name="suppressAllComments" value="true"/>
+        </commentGenerator>
+
+        <!-- JDBC连接 -->
+        <jdbcConnection
+                driverClass="com.mysql.cj.jdbc.Driver"
+                connectionURL="jdbc:mysql://39.105.123.58:3306/management_sys?useUnicode=true&amp;characterEncoding=utf-8&amp;useSSL=false&amp;serverTimezone=UTC&amp;allowPublicKeyRetrieval=true&amp;autoReconnect=true&amp;failOverReadOnly=false&amp;nullCatalogMeansCurrent=true"
+                userId="root"
+                password="1234">
+            <property name="nullCatalogMeansCurrent" value="true" />
+        </jdbcConnection>
+
+        <!-- 非必需，类型处理器，在数据库类型和java类型之间的转换控制-->
+        <!-- 默认false，把JDBC DECIMAL 和 NUMERIC 类型解析为 Integer，为 true时把JDBC DECIMAL 和
+         NUMERIC 类型解析为java.math.BigDecimal -->
+        <javaTypeResolver>
+            <!-- 是否使用bigDecimal， false可自动转化以下类型（Long, Integer, Short, etc.） -->
+            <property name="forceBigDecimals" value="false" />
+        </javaTypeResolver>
+
+        <!-- 生成实体类地址 -->
+        <javaModelGenerator targetPackage="pers.wangshun.supermarketserver.model" targetProject="src/main/java">
+            <!-- 从数据库返回的值被清理前后的空格 -->
+            <property name="trimStrings" value="true" />
+            <!-- enableSubPackages:是否让schema作为包的后缀 -->
+            <property name="enableSubPackages" value="false" />
+        </javaModelGenerator>
+
+        <!-- 生成mapper xml文件 -->
+        <sqlMapGenerator targetPackage="mappers"  targetProject="src/main/resources">
+            <!-- enableSubPackages:是否让schema作为包的后缀 -->
+            <property name="enableSubPackages" value="false" />
+        </sqlMapGenerator>
+
+        <!-- 生成mapper xml对应Client-->
+        <javaClientGenerator targetPackage="pers.wangshun.supermarketserver.mapper" targetProject="src/main/java" type="XMLMAPPER">
+            <!-- enableSubPackages:是否让schema作为包的后缀 -->
+            <property name="enableSubPackages" value="false" />
+        </javaClientGenerator>
+
+        <!-- 配置表信息 -->
+        <!-- schema即为数据库名 tableName为对应的数据库表 domainObjectName是要生成的实体类 enable*ByExample
+            是否生成 example类 -->
+
+        <table schema="management_sys" tableName="warehouse_product_info"
+               domainObjectName="WarehouseProductInfo" enableCountByExample="false"
+               enableDeleteByExample="false" enableSelectByExample="true"
+               enableUpdateByExample="false">
+            <columnOverride column="purchase_details_quantity_unit" jdbcType="VARCHAR" />
+        </table>
+<!--        <table schema="management_sys" tableName="activity_data"-->
+<!--               domainObjectName="ActivityData" enableCountByExample="false"-->
+<!--               enableDeleteByExample="false" enableSelectByExample="true"-->
+<!--               enableUpdateByExample="false">-->
+<!--            <columnOverride column="activity_name" jdbcType="VARCHAR" />-->
+<!--            <columnOverride column="activity_description" jdbcType="VARCHAR" />-->
+<!--        </table>-->
+<!--        <table schema="management_sys" tableName="goods_transfer_details"-->
+<!--               domainObjectName="GoodsTransferDetails" enableCountByExample="false"-->
+<!--               enableDeleteByExample="false" enableSelectByExample="true"-->
+<!--               enableUpdateByExample="false">-->
+<!--        </table>-->
+<!--        <table schema="management_sys" tableName="goods_category"-->
+<!--               domainObjectName="GoodsCategory" enableCountByExample="false"-->
+<!--               enableDeleteByExample="false" enableSelectByExample="true"-->
+<!--               enableUpdateByExample="false">-->
+<!--            <columnOverride column="category_name" jdbcType="VARCHAR" />-->
+<!--            <columnOverride column="category_description" jdbcType="VARCHAR" />-->
+<!--        </table>-->
+<!--        <table schema="management_sys" tableName="goods_price_adjustment_info"-->
+<!--               domainObjectName="GoodsPriceAdjustmentInfo" enableCountByExample="false"-->
+<!--               enableDeleteByExample="false" enableSelectByExample="true"-->
+<!--               enableUpdateByExample="false">-->
+<!--            <columnOverride column="goods_name" jdbcType="VARCHAR" />-->
+<!--        </table>-->
+<!--        <table schema="management_sys" tableName="inventory_counting_info"-->
+<!--               domainObjectName="InventoryCountingInfo" enableCountByExample="false"-->
+<!--               enableDeleteByExample="false" enableSelectByExample="true"-->
+<!--               enableUpdateByExample="false">-->
+<!--            <columnOverride column="inventory_remarks" jdbcType="VARCHAR" />-->
+<!--        </table>-->
+<!--        <table schema="management_sys" tableName="department_info"-->
+<!--               domainObjectName="DepartmentInfo" enableCountByExample="false"-->
+<!--               enableDeleteByExample="false" enableSelectByExample="true"-->
+<!--               enableUpdateByExample="false">-->
+<!--            <columnOverride column="department_name" jdbcType="VARCHAR" />-->
+<!--        </table>-->
+<!--        <table schema="management_sys" tableName="goods_discount_info"-->
+<!--               domainObjectName="GoodsDiscountInfo" enableCountByExample="false"-->
+<!--               enableDeleteByExample="false" enableSelectByExample="true"-->
+<!--               enableUpdateByExample="false">-->
+<!--            <columnOverride column="goods_name" jdbcType="VARCHAR" />-->
+<!--        </table>-->
+<!--        <table schema="management_sys" tableName="goods_transfer_info"-->
+<!--               domainObjectName="GoodsTransferInfo" enableCountByExample="false"-->
+<!--               enableDeleteByExample="false" enableSelectByExample="true"-->
+<!--               enableUpdateByExample="false">-->
+<!--            <columnOverride column="product_transfer_remarks" jdbcType="VARCHAR" />-->
+<!--        </table>-->
+<!--        <table schema="management_sys" tableName="expenses_record"-->
+<!--               domainObjectName="ExpensesRecord" enableCountByExample="false"-->
+<!--               enableDeleteByExample="false" enableSelectByExample="true"-->
+<!--               enableUpdateByExample="false">-->
+<!--            <columnOverride column="goods_name" jdbcType="VARCHAR" />-->
+<!--        </table>-->
+<!--        <table schema="management_sys" tableName="fourth_level_administrative_division"-->
+<!--               domainObjectName="FourthLevelAdministrativeDivision" enableCountByExample="false"-->
+<!--               enableDeleteByExample="false" enableSelectByExample="true"-->
+<!--               enableUpdateByExample="false">-->
+<!--            <columnOverride column="fourth_level_name" jdbcType="VARCHAR" />-->
+<!--        </table>-->
+<!--        <table schema="management_sys" tableName="inventory_counting_details"-->
+<!--               domainObjectName="InventoryCountingDetails" enableCountByExample="false"-->
+<!--               enableDeleteByExample="false" enableSelectByExample="true"-->
+<!--               enableUpdateByExample="false">-->
+<!--        </table>-->
+<!--        <table schema="management_sys" tableName="daily_data"-->
+<!--               domainObjectName="DailyData" enableCountByExample="false"-->
+<!--               enableDeleteByExample="false" enableSelectByExample="true"-->
+<!--               enableUpdateByExample="false">-->
+<!--        </table>-->
+<!--        <table schema="management_sys" tableName="employee_user"-->
+<!--               domainObjectName="EmployeeUser" enableCountByExample="false"-->
+<!--               enableDeleteByExample="false" enableSelectByExample="true"-->
+<!--               enableUpdateByExample="false">-->
+<!--            <columnOverride column="username" jdbcType="VARCHAR" />-->
+<!--            <columnOverride column="password" jdbcType="VARCHAR" />-->
+<!--            <columnOverride column="employee_location" jdbcType="VARCHAR" />-->
+<!--            <columnOverride column="employee_bankcard" jdbcType="VARCHAR" />-->
+<!--        </table>-->
+<!--        <table schema="management_sys" tableName="goods_info"-->
+<!--               domainObjectName="GoodsInfo" enableCountByExample="false"-->
+<!--               enableDeleteByExample="false" enableSelectByExample="true"-->
+<!--               enableUpdateByExample="false">-->
+<!--            <columnOverride column="goods_name" jdbcType="VARCHAR" />-->
+<!--            <columnOverride column="goods_origin" jdbcType="VARCHAR" />-->
+<!--            <columnOverride column="goods_raw_material" jdbcType="VARCHAR" />-->
+<!--            <columnOverride column="goods_specification" jdbcType="VARCHAR" />-->
+<!--            <columnOverride column="goods_manufacturer" jdbcType="VARCHAR" />-->
+<!--        </table>-->
+<!--        <table schema="management_sys" tableName="first_level_administrative_division"-->
+<!--               domainObjectName="FirstLevelAdministrativeDivision" enableCountByExample="false"-->
+<!--               enableDeleteByExample="false" enableSelectByExample="true"-->
+<!--               enableUpdateByExample="false">-->
+<!--            <columnOverride column="first_level_name" jdbcType="VARCHAR" />-->
+<!--        </table>-->
+<!--        <table schema="management_sys" tableName="supplier_info"-->
+<!--               domainObjectName="SupplierInfo" enableCountByExample="false"-->
+<!--               enableDeleteByExample="false" enableSelectByExample="true"-->
+<!--               enableUpdateByExample="false">-->
+<!--            <columnOverride column="supplier_name" jdbcType="VARCHAR" />-->
+<!--            <columnOverride column="supplier_area" jdbcType="VARCHAR" />-->
+<!--            <columnOverride column="supplier_contact_person" jdbcType="VARCHAR" />-->
+<!--            <columnOverride column="supplier_email" jdbcType="VARCHAR" />-->
+<!--            <columnOverride column="supplier_deposit_bank" jdbcType="VARCHAR" />-->
+<!--            <columnOverride column="supplier_bank_account" jdbcType="VARCHAR" />-->
+<!--            <columnOverride column="supplier_site" jdbcType="VARCHAR" />-->
+<!--            <columnOverride column="supplier_remarks" jdbcType="VARCHAR" />-->
+<!--        </table>-->
+<!--        <table schema="management_sys" tableName="role"-->
+<!--               domainObjectName="Role" enableCountByExample="false"-->
+<!--               enableDeleteByExample="false" enableSelectByExample="true"-->
+<!--               enableUpdateByExample="false">-->
+<!--            <columnOverride column="name" jdbcType="VARCHAR" />-->
+<!--            <columnOverride column="description" jdbcType="VARCHAR" />-->
+<!--        </table>-->
+<!--        <table schema="management_sys" tableName="purchase_accounting_entry_details"-->
+<!--               domainObjectName="PurchaseAccountingEntryDetails" enableCountByExample="false"-->
+<!--               enableDeleteByExample="false" enableSelectByExample="true"-->
+<!--               enableUpdateByExample="false">-->
+<!--            <columnOverride column="accounting_subjects" jdbcType="VARCHAR" />-->
+<!--        </table>-->
+<!--        <table schema="management_sys" tableName="purchase_receipt_info"-->
+<!--               domainObjectName="PurchaseReceiptInfo" enableCountByExample="false"-->
+<!--               enableDeleteByExample="false" enableSelectByExample="true"-->
+<!--               enableUpdateByExample="false">-->
+<!--            <columnOverride column="purchase_receipt_username" jdbcType="VARCHAR" />-->
+<!--            <columnOverride column="purchase_remarks" jdbcType="VARCHAR" />-->
+<!--        </table>-->
+<!--        <table schema="management_sys" tableName="purchase_accounting_entry_info"-->
+<!--               domainObjectName="PurchaseAccountingEntryInfo" enableCountByExample="false"-->
+<!--               enableDeleteByExample="false" enableSelectByExample="true"-->
+<!--               enableUpdateByExample="false">-->
+<!--            <columnOverride column="purchase_accounting_entry_remarks" jdbcType="VARCHAR" />-->
+<!--        </table>-->
+<!--        <table schema="management_sys" tableName="user_role"-->
+<!--               domainObjectName="UserRole" enableCountByExample="false"-->
+<!--               enableDeleteByExample="false" enableSelectByExample="true"-->
+<!--               enableUpdateByExample="false">-->
+<!--        </table>-->
+<!--        <table schema="management_sys" tableName="inventory_gain_loss_details"-->
+<!--               domainObjectName="InventoryGainLossDetails" enableCountByExample="false"-->
+<!--               enableDeleteByExample="false" enableSelectByExample="true"-->
+<!--               enableUpdateByExample="false">-->
+<!--        </table>-->
+<!--        <table schema="management_sys" tableName="resource_role"-->
+<!--               domainObjectName="ResourceRole" enableCountByExample="false"-->
+<!--               enableDeleteByExample="false" enableSelectByExample="true"-->
+<!--               enableUpdateByExample="false">-->
+<!--        </table>-->
+<!--        <table schema="management_sys" tableName="second_level_administrative_division"-->
+<!--               domainObjectName="SecondLevelAdministrativeDivision" enableCountByExample="false"-->
+<!--               enableDeleteByExample="false" enableSelectByExample="true"-->
+<!--               enableUpdateByExample="false">-->
+<!--            <columnOverride column="second_level_name" jdbcType="VARCHAR" />-->
+<!--        </table>-->
+<!--        <table schema="management_sys" tableName="purchase_order_info"-->
+<!--               domainObjectName="PurchaseOrderInfo" enableCountByExample="false"-->
+<!--               enableDeleteByExample="false" enableSelectByExample="true"-->
+<!--               enableUpdateByExample="false">-->
+<!--            <columnOverride column="shipping_address" jdbcType="VARCHAR" />-->
+<!--            <columnOverride column="purchase_order_remarks" jdbcType="VARCHAR" />-->
+<!--        </table>-->
+<!--        <table schema="management_sys" tableName="inventory_warning_info"-->
+<!--               domainObjectName="InventoryWarningInfo" enableCountByExample="false"-->
+<!--               enableDeleteByExample="false" enableSelectByExample="true"-->
+<!--               enableUpdateByExample="false">-->
+<!--            <columnOverride column="goods_name" jdbcType="VARCHAR" />-->
+<!--        </table>-->
+<!--        <table schema="management_sys" tableName="vip_user"-->
+<!--               domainObjectName="VipUser" enableCountByExample="false"-->
+<!--               enableDeleteByExample="false" enableSelectByExample="true"-->
+<!--               enableUpdateByExample="false">-->
+<!--            <columnOverride column="username" jdbcType="VARCHAR" />-->
+<!--            <columnOverride column="password" jdbcType="VARCHAR" />-->
+<!--            <columnOverride column="vip_place" jdbcType="VARCHAR" />-->
+<!--        </table>-->
+<!--        <table schema="management_sys" tableName="purchase_details_info"-->
+<!--               domainObjectName="PurchaseDetailsInfo" enableCountByExample="false"-->
+<!--               enableDeleteByExample="false" enableSelectByExample="true"-->
+<!--               enableUpdateByExample="false">-->
+<!--            <columnOverride column="purchase_details_quantity_unit" jdbcType="VARCHAR" />-->
+<!--        </table>-->
+<!--        <table schema="management_sys" tableName="warehouse_info"-->
+<!--               domainObjectName="WarehouseInfo" enableCountByExample="false"-->
+<!--               enableDeleteByExample="false" enableSelectByExample="true"-->
+<!--               enableUpdateByExample="false">-->
+<!--            <columnOverride column="warehouse_name" jdbcType="VARCHAR" />-->
+<!--            <columnOverride column="warehouse_location" jdbcType="VARCHAR" />-->
+<!--            <columnOverride column="warehouse_description" jdbcType="VARCHAR" />-->
+<!--        </table>-->
+<!--        <table schema="management_sys" tableName="third_level_administrative_division"-->
+<!--               domainObjectName="ThirdLevelAdministrativeDivision" enableCountByExample="false"-->
+<!--               enableDeleteByExample="false" enableSelectByExample="true"-->
+<!--               enableUpdateByExample="false">-->
+<!--            <columnOverride column="third_level_name" jdbcType="VARCHAR" />-->
+<!--        </table><table schema="management_sys" tableName="shop_info"-->
+<!--               domainObjectName="ShopInfo" enableCountByExample="false"-->
+<!--               enableDeleteByExample="false" enableSelectByExample="true"-->
+<!--               enableUpdateByExample="false">-->
+<!--            <columnOverride column="shop_location" jdbcType="VARCHAR" />-->
+<!--            <columnOverride column="shop_description" jdbcType="VARCHAR" />-->
+<!--        </table>-->
+<!--        <table schema="management_sys" tableName="resource"-->
+<!--               domainObjectName="Resource" enableCountByExample="false"-->
+<!--               enableDeleteByExample="false" enableSelectByExample="true"-->
+<!--               enableUpdateByExample="false">-->
+<!--            <columnOverride column="path" jdbcType="VARCHAR" />-->
+<!--            <columnOverride column="name" jdbcType="VARCHAR" />-->
+<!--            <columnOverride column="component" jdbcType="VARCHAR" />-->
+<!--        </table>-->
+
+
+    </context>
+</generatorConfiguration>
